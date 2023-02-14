@@ -19,7 +19,7 @@ itc.title('Islāmic Text Copier')
 itc.geometry('1000x550+500+280')
 itc.resizable(width=True, height=True)
 itc.configure(bg='#1b1c27', fg_color="#1b1c27")
-itc.iconbitmap('resources/icon.icns')
+itc.iconbitmap('icon.icns')
 
 bg = '#1b1c27'
 hoverbg = '#393c4f'
