@@ -1,17 +1,16 @@
-import tkinter as tk
 # from PIL import ImageTk, Image
 # import os
 import subprocess as subp
-# import requests as rq
-# import socket as sk
-import webbrowser as wb
-# from pyglet import font
-# import keyboard as kb
-# import ctypes as cty
+import tkinter as tk
+import customtkinter as ctk
 import pyperclip as pc
 # import turtle
 # import tkmacosx as tkm
-import customtkinter as ctk
+# import requests as rq
+# import socket as sk
+# from pyglet import font
+# import keyboard as kb
+# import ctypes as cty
 
 # set up the window
 itc = ctk.CTk()
@@ -26,66 +25,82 @@ hoverbg = '#393c4f'
 txtcl = '#ffffff'
 hovertext = '#898DA9'
 
+
 # set up button commands
 
 # command to copy ﷺ
 def btn1():
     pc.copy(btn1_text.get())
 
+
 # command to copy ﷻ
 def btn2():
     pc.copy(btn2_text.get())
+
 
 # command to copy سبحانه و تعالى
 def btn3():
     pc.copy(btn3_text.get())
 
+
 # command to copy
 def btn4():
     pc.copy(btn4_text.get())
+
 
 # command to copy
 def btn5():
     pc.copy(btn5_text.get())
 
+
 # command to copy
 def btn6():
     pc.copy(btn6_text.get())
+
 
 # command to copy
 def btn7():
     pc.copy(btn7_text.get())
 
+
 # command to copy
 def btn8():
     pc.copy(btn8_text.get())
+
 
 # command to copy
 def btn9():
     pc.copy(btn9_text.get())
 
+
 # command to copy
 def btn10():
     pc.copy(btn10_text.get())
+
 
 # command to copy
 def btn11():
     pc.copy(btn11_text.get())
 
+
 # command to copy
 def btn12():
     pc.copy(btn12_text.get())
+
 
 # command to copy
 def btn13():
     pc.copy(btn13_text.get())
 
+
 # command to copy
 def btn14():
     pc.copy(btn14_text.get())
 
+
 def btn15():
     pc.copy(btn15_text.get())
+
 
 # other button commands
 
@@ -95,139 +110,174 @@ def btn1_enter(event):
     btn_1.configure(bg_color=bg, fg_color=hoverbg, text_color=txtcl)
     copyinfo.configure(text="Sallá Allāhu ʿAlayhī wa as-Salam (May Allāh's praise & salutations be upon him)")
 
+
 def btn1_leave(event):
     btn_1.configure(bg_color=bg, fg_color=bg, text_color=txtcl)
     copyinfo.configure(text="Hover over a text to see it's meaning")
+
 
 def btn2_enter(event):
     btn_2.configure(bg_color=bg, fg_color=hoverbg, text_color=txtcl)
     copyinfo.configure(text="Jalla Jalāluhu (Exalted is His Majesty)")
 
+
 def btn2_leave(event):
     btn_2.configure(bg_color=bg, fg_color=bg, text_color=txtcl)
     copyinfo.configure(text="Hover over a text to see it's meaning")
+
 
 def btn3_enter(event):
     btn_3.configure(bg_color=bg, fg_color=hoverbg, text_color=txtcl)
     copyinfo.configure(text="Subḥānahu wa Taʾālá (Glorious and Exalted is He)")
 
+
 def btn3_leave(event):
     btn_3.configure(bg_color=bg, fg_color=bg, text_color=txtcl)
     copyinfo.configure(text="Hover over a text to see it's meaning")
+
 
 def btn4_enter(event):
     btn_4.configure(bg_color=bg, fg_color=hoverbg, text_color=txtcl)
     copyinfo.configure(text="ʿAzza wa Jal (The Mighty and Majestic)")
 
+
 def btn4_leave(event):
     btn_4.configure(bg_color=bg, fg_color=bg, text_color=txtcl)
     copyinfo.configure(text="Hover over a text to see it's meaning")
+
 
 def btn5_enter(event):
     btn_5.configure(bg_color=bg, fg_color=hoverbg, text_color=txtcl)
     copyinfo.configure(text="Raḍī Allāhu ʿAnhu (May Allāh be pleased with him)")
 
+
 def btn5_leave(event):
     btn_5.configure(bg_color=bg, fg_color=bg, text_color=txtcl)
     copyinfo.configure(text="Hover over a text to see it's meaning")
+
 
 def btn6_enter(event):
     btn_6.configure(bg_color=bg, fg_color=hoverbg, text_color=txtcl)
     copyinfo.configure(text="Raḍī Allāhu ʿAnhā (May Allāh be pleased with her)")
 
+
 def btn6_leave(event):
     btn_6.configure(bg_color=bg, fg_color=bg, text_color=txtcl)
     copyinfo.configure(text="Hover over a text to see it's meaning")
+
 
 def btn7_enter(event):
     btn_7.configure(bg_color=bg, fg_color=hoverbg, text_color=txtcl)
     copyinfo.configure(text="Raḥimahullāh (May Allah have mercy on him)")
 
+
 def btn7_leave(event):
     btn_7.configure(bg_color=bg, fg_color=bg, text_color=txtcl)
     copyinfo.configure(text="Hover over a text to see it's meaning")
+
 
 def btn8_enter(event):
     btn_8.configure(bg_color=bg, fg_color=hoverbg, text_color=txtcl)
     copyinfo.configure(text="Ḥafiẓahullāh (May Allah preserve him)")
 
+
 def btn8_leave(event):
     btn_8.configure(bg_color=bg, fg_color=bg, text_color=txtcl)
     copyinfo.configure(text="Hover over a text to see it's meaning")
+
 
 def btn9_enter(event):
     btn_9.configure(bg_color=bg, fg_color=hoverbg, text_color=txtcl)
     copyinfo.configure(text="ʿAlayhī as-Salām (Peace be upon him)")
 
+
 def btn9_leave(event):
     btn_9.configure(bg_color=bg, fg_color=bg, text_color=txtcl)
     copyinfo.configure(text="Hover over a text to see it's meaning")
+
 
 def btn10_enter(event):
     btn_10.configure(bg_color=bg, fg_color=hoverbg, text_color=txtcl)
     copyinfo.configure(text="Alḥamdulillāh (All praises and thanks are due to Allāh)")
 
+
 def btn10_leave(event):
     btn_10.configure(bg_color=bg, fg_color=bg, text_color=txtcl)
     copyinfo.configure(text="Hover over a text to see it's meaning")
+
 
 def btn11_enter(event):
     btn_11.configure(bg_color=bg, fg_color=hoverbg, text_color=txtcl)
     copyinfo.configure(text="Jazāk Allāhu Khairan (May Allāh give you good)")
 
+
 def btn11_leave(event):
     btn_11.configure(bg_color=bg, fg_color=bg, text_color=txtcl)
     copyinfo.configure(text="Hover over a text to see it's meaning")
+
 
 def btn12_enter(event):
     btn_12.configure(bg_color=bg, fg_color=hoverbg, text_color=txtcl)
     copyinfo.configure(text=" Bārak Allāhu Fīk (May Allāh bless you)")
 
+
 def btn12_leave(event):
     btn_12.configure(bg_color=bg, fg_color=bg, text_color=txtcl)
     copyinfo.configure(text="Hover over a text to see it's meaning")
+
 
 def btn13_enter(event):
     btn_13.configure(bg_color=bg, fg_color=hoverbg, text_color=txtcl)
     copyinfo.configure(text="As Salāmu ‘Alaikum (Peace be upon you)")
 
+
 def btn13_leave(event):
     btn_13.configure(bg_color=bg, fg_color=bg, text_color=txtcl)
     copyinfo.configure(text="Hover over a text to see it's meaning")
+
 
 def btn14_enter(event):
     btn_14.configure(bg_color=bg, fg_color=hoverbg, text_color=txtcl)
     copyinfo.configure(text=" ʾIn shāʾ Allāh (If Allāh wills)")
 
+
 def btn14_leave(event):
     btn_14.configure(bg_color=bg, fg_color=bg, text_color=txtcl)
     copyinfo.configure(text="Hover over a text to see it's meaning")
+
 
 def btn15_enter(event):
     btn_15.configure(bg_color=bg, fg_color=hoverbg, text_color=txtcl)
     copyinfo.configure(text="Raḍī Allāhu ʿAnhumā (May Allāh be pleased with them)")
 
+
 def btn15_leave(event):
     btn_15.configure(bg_color=bg, fg_color=bg, text_color=txtcl)
     copyinfo.configure(text="Hover over a text to see it's meaning")
+
 
 def manual_enter(event):
     manual_btn.configure(bg_color=bg, fg_color=hoverbg, text_color=txtcl)
     copyinfo.configure(text="Go to the documnetation")
 
+
 def manual_leave(event):
     manual_btn.configure(bg_color=bg, fg_color=bg, text_color=txtcl)
     copyinfo.configure(text="Hover over a text to see it's meaning")
 
+
 def infobtn(event):
-    info.configure(text_color=hovertext )
+    info.configure(text_color=hovertext)
+
 
 def infobtn_leave(event):
     info.configure(text_color=txtcl)
 
+
 # open the documentation
 
 documentation = "ITC_Documentation.pdf"
+
 
 def manual():
     subp.Popen(["open", documentation], stdout=subp.PIPE, stderr=subp.PIPE)
@@ -238,13 +288,16 @@ def manual():
 
 homeurl = "https://itc.nasiratif.net"
 
+
 def home():
     subp.Popen(["open", homeurl], stdout=subp.PIPE, stderr=subp.PIPE)
     itc.wm_state('iconic')
 
-# open the github page for the project and issues
+
+# open the GitHub page for the project and issues
 
 githuburl = "https://github.com/itextc/itc-osx"
+
 
 def github():
     subp.Popen(["open", githuburl], stdout=subp.PIPE, stderr=subp.PIPE)
@@ -258,12 +311,13 @@ def github():
 # title.place(x=10, y=0, relwidth=1, relheight=0.12)
 # Hover texts that will be shown when the mouse hovers over the button
 # copyinfo_text = tk.StringVar(master=itc, value="Hover over a text to see it's meaning")
-copyinfo = ctk.CTkLabel(master = itc, text="Hover over a text to see it's meaning", font=("Calibri", 20), fg_color=bg, bg_color=bg, text_color=txtcl)
+copyinfo = ctk.CTkLabel(master=itc, text="Hover over a text to see it's meaning", font=("Calibri", 20), fg_color=bg,
+                        bg_color=bg, text_color=txtcl)
 copyinfo.place(relx=0.5, rely=0.95, anchor=tk.CENTER)
 
 # make button dependencies
 
-# I dont know whether I will use image or text, but I will set up both
+# I don't know whether I will use image or text, but I will set up both
 btn1_image = tk.PhotoImage("resources/1.png")
 btn2_image = tk.PhotoImage("resources/2.png")
 btn3_image = tk.PhotoImage("resources/3.png")
@@ -312,31 +366,47 @@ btn22_text = tk.StringVar(master=itc, value="")
 
 info_text = tk.StringVar(master=itc, value="Made by: \n Nāsir Ātif and  'Abdur-Rahmān Bilāl")
 
-info = ctk.CTkButton(master = itc, textvariable=info_text, font=("Calibri", 15), fg_color="#1b1c27", bg_color="#1b1c27", text_color=txtcl, anchor=tk.CENTER, command=github)
+info = ctk.CTkButton(master=itc, textvariable=info_text, font=("Calibri", 15), fg_color="#1b1c27", bg_color="#1b1c27",
+                     text_color=txtcl, anchor=tk.CENTER, command=github)
 info.place(relx=0.85, rely=.07, anchor=tk.CENTER)
 info.bind("<Enter>", infobtn)
 info.bind("<Leave>", infobtn_leave)
 
 # Buttons
 
-btn_1 = ctk.CTkButton(master=itc, textvariable=btn1_text, command=btn1, font=("Calibri", 70), width=60, height=60, fg_color="#1b1c27", bg_color="#1b1c27", text_color=txtcl)
+btn_1 = ctk.CTkButton(master=itc, textvariable=btn1_text, command=btn1, font=("Calibri", 70), width=60, height=60,
+                      fg_color="#1b1c27", bg_color="#1b1c27", text_color=txtcl)
 btn_1.bind("<Enter>", btn1_enter)
 btn_1.bind("<Leave>", btn1_leave)
-btn_2 = ctk.CTkButton(master=itc, textvariable=btn2_text, command=btn2,  width=25, height=25, fg_color="#1b1c27", bg_color="#1b1c27", font=("Arial", 80), anchor=tk.CENTER, text_color=txtcl)
-btn_3 = ctk.CTkButton(master=itc, textvariable=btn3_text, command=btn3,  width=60, height=60, fg_color="#1b1c27", bg_color="#1b1c27", font=("Calibri", 30), anchor=tk.CENTER, text_color=txtcl)
-btn_4 = ctk.CTkButton(master=itc, textvariable=btn4_text, command=btn4,  width=60, height=60, fg_color="#1b1c27", bg_color="#1b1c27", font=("Calibri", 30), text_color=txtcl)
-btn_5 = ctk.CTkButton(master=itc, textvariable=btn5_text, command=btn5,  width=60, height=60, fg_color="#1b1c27", bg_color="#1b1c27", font=("Calibri", 30), text_color=txtcl)
-btn_6 = ctk.CTkButton(master=itc, textvariable=btn6_text, command=btn6,  width=60, height=60, fg_color="#1b1c27", bg_color="#1b1c27", font=("Calibri", 30), text_color=txtcl)
-btn_7 = ctk.CTkButton(master=itc, textvariable=btn7_text, command=btn7,  width=60, height=60, fg_color="#1b1c27", bg_color="#1b1c27", font=("Calibri", 30), text_color=txtcl)
-btn_8 = ctk.CTkButton(master=itc, textvariable=btn8_text, command=btn8, width=60, height=60, fg_color="#1b1c27", bg_color="#1b1c27", font=("Calibri", 30), text_color=txtcl)
-btn_9 = ctk.CTkButton(master=itc, textvariable=btn9_text, command=btn9,  width=60, height=60, fg_color="#1b1c27", bg_color="#1b1c27", font=("Calibri", 30), text_color=txtcl)
-btn_10 = ctk.CTkButton(master=itc, textvariable=btn10_text, command=btn10, width=60, height=60, fg_color="#1b1c27", bg_color="#1b1c27", font=("Calibri", 30), text_color=txtcl)
-btn_11 = ctk.CTkButton(master=itc, textvariable=btn11_text, command=btn11, width=60, height=60, fg_color="#1b1c27", bg_color="#1b1c27", font=("Calibri",
-30), text_color=txtcl)
-btn_12 = ctk.CTkButton(master=itc, textvariable=btn12_text, command=btn12, width=60, height=60, fg_color="#1b1c27", bg_color="#1b1c27", font=("Calibri", 30), text_color=txtcl)
-btn_13 = ctk.CTkButton(master=itc, textvariable=btn13_text, command=btn13, width=60, height=60, fg_color="#1b1c27", bg_color="#1b1c27", font=("Calibri", 30), text_color=txtcl)
-btn_14 = ctk.CTkButton(master=itc, textvariable=btn14_text, command=btn14, width=60, height=60, fg_color="#1b1c27", bg_color="#1b1c27", font=("Calibri", 30), text_color=txtcl)
-btn_15 = ctk.CTkButton(master=itc, textvariable=btn15_text, command=btn15, width=60, height=60, fg_color="#1b1c27", bg_color="#1b1c27", font=("Calibri", 30), text_color=txtcl)
+btn_2 = ctk.CTkButton(master=itc, textvariable=btn2_text, command=btn2, width=25, height=25, fg_color="#1b1c27",
+                      bg_color="#1b1c27", font=("Arial", 80), anchor=tk.CENTER, text_color=txtcl)
+btn_3 = ctk.CTkButton(master=itc, textvariable=btn3_text, command=btn3, width=60, height=60, fg_color="#1b1c27",
+                      bg_color="#1b1c27", font=("Calibri", 30), anchor=tk.CENTER, text_color=txtcl)
+btn_4 = ctk.CTkButton(master=itc, textvariable=btn4_text, command=btn4, width=60, height=60, fg_color="#1b1c27",
+                      bg_color="#1b1c27", font=("Calibri", 30), text_color=txtcl)
+btn_5 = ctk.CTkButton(master=itc, textvariable=btn5_text, command=btn5, width=60, height=60, fg_color="#1b1c27",
+                      bg_color="#1b1c27", font=("Calibri", 30), text_color=txtcl)
+btn_6 = ctk.CTkButton(master=itc, textvariable=btn6_text, command=btn6, width=60, height=60, fg_color="#1b1c27",
+                      bg_color="#1b1c27", font=("Calibri", 30), text_color=txtcl)
+btn_7 = ctk.CTkButton(master=itc, textvariable=btn7_text, command=btn7, width=60, height=60, fg_color="#1b1c27",
+                      bg_color="#1b1c27", font=("Calibri", 30), text_color=txtcl)
+btn_8 = ctk.CTkButton(master=itc, textvariable=btn8_text, command=btn8, width=60, height=60, fg_color="#1b1c27",
+                      bg_color="#1b1c27", font=("Calibri", 30), text_color=txtcl)
+btn_9 = ctk.CTkButton(master=itc, textvariable=btn9_text, command=btn9, width=60, height=60, fg_color="#1b1c27",
+                      bg_color="#1b1c27", font=("Calibri", 30), text_color=txtcl)
+btn_10 = ctk.CTkButton(master=itc, textvariable=btn10_text, command=btn10, width=60, height=60, fg_color="#1b1c27",
+                       bg_color="#1b1c27", font=("Calibri", 30), text_color=txtcl)
+btn_11 = ctk.CTkButton(master=itc, textvariable=btn11_text, command=btn11, width=60, height=60, fg_color="#1b1c27",
+                       bg_color="#1b1c27", font=("Calibri",
+                                                 30), text_color=txtcl)
+btn_12 = ctk.CTkButton(master=itc, textvariable=btn12_text, command=btn12, width=60, height=60, fg_color="#1b1c27",
+                       bg_color="#1b1c27", font=("Calibri", 30), text_color=txtcl)
+btn_13 = ctk.CTkButton(master=itc, textvariable=btn13_text, command=btn13, width=60, height=60, fg_color="#1b1c27",
+                       bg_color="#1b1c27", font=("Calibri", 30), text_color=txtcl)
+btn_14 = ctk.CTkButton(master=itc, textvariable=btn14_text, command=btn14, width=60, height=60, fg_color="#1b1c27",
+                       bg_color="#1b1c27", font=("Calibri", 30), text_color=txtcl)
+btn_15 = ctk.CTkButton(master=itc, textvariable=btn15_text, command=btn15, width=60, height=60, fg_color="#1b1c27",
+                       bg_color="#1b1c27", font=("Calibri", 30), text_color=txtcl)
 # btn_15 = ctk.CTkButton(master=itc, textvariable=btn15_text, command=btn15)
 # btn_16 = ctk.CTkButton(master=itc, textvariable=btn16_text, command=btn16)
 # btn_17 = ctk.CTkButton(master=itc, textvariable=btn17_text, command=btn17)
@@ -345,7 +415,8 @@ btn_15 = ctk.CTkButton(master=itc, textvariable=btn15_text, command=btn15, width
 # btn_20 = ctk.CTkButton(master=itc, textvariable=btn20_text, command=btn20)
 # btn_21 = ctk.CTkButton(master=itc, textvariable=btn21_text, command=btn21)
 # btn_22 = ctk.CTkButton(master=itc, textvariable=btn22_text, command=btn22)
-manual_btn = ctk.CTkButton(master=itc, text="Documentation", command=manual, width=35, height=35, fg_color="#1b1c27", bg_color="#1b1c27", font=("Calibri", 20), text_color=txtcl)
+manual_btn = ctk.CTkButton(master=itc, text="Documentation", command=manual, width=35, height=35, fg_color="#1b1c27",
+                           bg_color="#1b1c27", font=("Calibri", 20), text_color=txtcl)
 # Set up the hover effect
 btn_1.bind("<Enter>", btn1_enter)
 btn_1.bind("<Leave>", btn1_leave)
@@ -397,16 +468,11 @@ btn_14.place(relx=0.12, rely=.78, anchor=tk.CENTER)
 btn_15.place(relx=0.32, rely=.78, anchor=tk.CENTER)
 manual_btn.place(relx=0.5, rely=.071, anchor=tk.CENTER)
 
-
 # btn_1.grid(row=15, column=0, padx=90, pady=150)
 # btn_2.grid(row=15, column=1, padx=8, pady=8)
 # btn_3.grid(row=15, column=2, padx=80, pady=140)
 # btn_4.grid(row=15, column=3, padx=8, pady=8)
 # btn_5.grid(row=16, column=0, padx=2, pady=2)
-
-
-
-
 
 
 # run the window
