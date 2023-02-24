@@ -23,8 +23,8 @@ OPTIONS = {
             }
         ]
     },
-    'arch': 'x86_64,arm64',
-    'packages': ['ctypes', 'customtkinter', 'pyperclip', 'subprocess', 'tkinter', 'webbrowser'],
+    'arch': 'universal',
+    'packages': ['ctypes', 'customtkinter', 'pyperclip', 'subprocess', 'tkinter'],
     'includes': ['PIL', 'pyglet'],
     'site_packages': True,
     'excludes': ['numpy', 'scipy'],
