@@ -1,7 +1,0 @@
-LICENSE
-README.md
-setup.py
-itc.egg-info/PKG-INFO
-itc.egg-info/SOURCES.txt
-itc.egg-info/dependency_links.txt
-itc.egg-info/top_level.txt
