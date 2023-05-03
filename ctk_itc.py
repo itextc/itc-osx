@@ -218,7 +218,7 @@ def btn11_leave(event):
 
 def btn12_enter(event):
     btn_12.configure(bg_color=bg, fg_color=hoverbg, text_color=txtcl)
-    copyinfo.configure(text=" Bārak Allāhu Fīk (May Allāh bless you)")
+    copyinfo.configure(text="Bārak Allāhu Fīk (May Allāh bless you)")
 
 
 def btn12_leave(event):
@@ -238,7 +238,7 @@ def btn13_leave(event):
 
 def btn14_enter(event):
     btn_14.configure(bg_color=bg, fg_color=hoverbg, text_color=txtcl)
-    copyinfo.configure(text=" ʾIn shāʾ Allāh (If Allāh wills)")
+    copyinfo.configure(text="ʾIn shāʾ Allāh (If Allāh wills)")
 
 
 def btn14_leave(event):
@@ -356,13 +356,13 @@ btn12_text = tk.StringVar(master=itc, value="بَارَكَ اللهُ فِيك�
 btn13_text = tk.StringVar(master=itc, value="السَّلَامُ عَلَيْكُم")
 btn14_text = tk.StringVar(master=itc, value="إِن شَاءَ الله")
 btn15_text = tk.StringVar(master=itc, value="رَضِيَ اللهُ عَنْهُمَا")
-btn16_text = tk.StringVar(master=itc, value="")
-btn17_text = tk.StringVar(master=itc, value="")
-btn18_text = tk.StringVar(master=itc, value="")
-btn19_text = tk.StringVar(master=itc, value="")
-btn20_text = tk.StringVar(master=itc, value="")
-btn21_text = tk.StringVar(master=itc, value="")
-btn22_text = tk.StringVar(master=itc, value="")
+# btn16_text = tk.StringVar(master=itc, value="")
+# btn17_text = tk.StringVar(master=itc, value="")
+# btn18_text = tk.StringVar(master=itc, value="")
+# btn19_text = tk.StringVar(master=itc, value="")
+# btn20_text = tk.StringVar(master=itc, value="")
+# btn21_text = tk.StringVar(master=itc, value="")
+# btn22_text = tk.StringVar(master=itc, value="")
 
 info_text = tk.StringVar(master=itc, value="Made by: \n Nāsir Ātif and  'Abdur-Rahmān Bilāl")
 
