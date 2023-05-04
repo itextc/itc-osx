@@ -1,6 +1,8 @@
 import tkinter as tk
 import webbrowser
 import os
+import sys
+sys.path.append('resources/frameworks')
 from tkmacosx import Button
 import requests
 import tkinter.messagebox as messagebox
@@ -11,18 +13,28 @@ root.title('Islāmic Text Copier')
 root.geometry('1200x800+500+280')
 root.resizable(width=True, height=True)
 root.config(bg='#1b1c27')
-itc_img = tk.Image("photo", file="main.png")
+itc_img = tk.Image("photo", file="resources/main.png")
 root.tk.call('wm', 'iconphoto', root._w, itc_img)
 
 # Create a list of Arabic phrases and their meanings
-arabic_phrases = [('ﷺ', "Sallá Allāhu ʿAlayhī wa as-Salam (May Allāh's praise & salutations be upon him)"),('ﷻ', "Jalla Jalāluhu (Exalted is His Majesty)"),("سُبْحَانَهُ وَ تَعَالَى", "Subḥānahu wa Taʾālá (Glorious and Exalted is He)"),("عَزَّ وَ جَلّ", "ʿAzza wa Jal (The Mighty and Majestic)"),("ُرَضِيَ الله عَنْه", "Raḍī Allāhu ʿAnhu (May Allāh be pleased with him)"),("رَضِيَ اللهُ عَنْهَا", "Raḍī Allāhu ʿAnhā (May Allāh be pleased with her)"),("رَحِمَهُ الله","Raḥimahullāh (May Allah have mercy on him)"),("حَفِظَهُ الله", "Ḥafiẓahullāh (May Allah preserve him)"),("عَلَيْهِ السَّلام", "ʿAlayhī as-Salām (Peace be upon him)"),("الحَمْدُ لله", "Alḥamdulillāh (All praises and thanks are due to Allāh)"),("جَزَاكَ اللهُ خَيْرَاً", "Jazāk Allāhu Khairan (May Allāh give you good)"),("بَارَكَ اللهُ فِيكَ", "Bārak Allāhu Fīk (May Allāh bless you)"),("السَّلَامُ عَلَيْكُم", "As Salāmu ‘Alaikum (Peace be upon you)"),("إِن شَاءَ الله", "ʾIn shāʾ Allāh (If Allāh wills)"),("رَضِيَ اللهُ عَنْهُمَا", "Raḍī Allāhu ʿAnhumā (May Allāh be pleased with them)"),("﷽", "Bismillāh ir-Raḥmān ir-Raḥīm"),
+arabic_phrases = [('ﷺ', "Sallá Allāhu ʿAlayhī wa as-Salam (May Allāh's praise & salutations be upon him)"),('ﷻ', "Jalla Jalāluhu (Exalted is His Majesty)"),("سُبْحَانَهُ وَ تَعَالَى", "Subḥānahu wa Taʾālá (Glorious and Exalted is He)"),("عَزَّ وَ جَلّ", "ʿAzza wa Jal (The Mighty and Majestic)"),("ُرَضِيَ الله عَنْه", "Raḍī Allāhu ʿAnhu (May Allāh be pleased with him)"),("رَضِيَ اللهُ عَنْهَا", "Raḍī Allāhu ʿAnhā (May Allāh be pleased with her)"),("رَحِمَهُ الله","Raḥimahullāh (May Allah have mercy on him)"),("حَفِظَهُ الله", "Ḥafiẓahullāh (May Allah preserve him)"),("عَلَيْهِ السَّلام", "ʿAlayhī as-Salām (Peace be upon him)"),("الحَمْدُ لله", "Alḥamdulillāh (All praises and thanks are due to Allāh)"),("جَزَاكَ اللهُ خَيْرَاً", "Jazāk Allāhu Khairan (May Allāh give you good)"),("بَارَكَ اللهُ فِيكَ", "Bārak Allāhu Fīk (May Allāh bless you)"),("السَّلَامُ عَلَيْكُم", "As Salāmu ‘Alaikum (Peace be upon you)"),("إِن شَاءَ الله", "ʾIn shāʾ Allāh (If Allāh wills)"),("رَضِيَ اللهُ عَنْهُمَا", "Raḍī Allāhu ʿAnhumā (May Allāh be pleased with them)"),("﷽", "Bismillāh ir-Raḥmān ir-Raḥīm"),
 ]
 
 # Create a function to copy the selected Arabic phrase to clipboard
 def copy_to_clipboard(phrase):
     root.clipboard_clear()
     root.clipboard_append(phrase)
+    bottom_label.config(text=f"{phrase} copied to clipboard")
 
+
+bottom_label = tk.Label(
+    root,
+    text="",
+    font=('Calibri', 14),
+    bg='#1b1c27',
+    fg='#ffffff'
+)
+bottom_label.place(relx=0.5, rely=0.95, anchor=tk.CENTER)
 # Create a function to show the meaning of the Arabic phrase
 def show_meaning(meaning):
     meaning_label.config(text=meaning)
@@ -49,7 +61,7 @@ for i, (phrase, meaning) in enumerate(arabic_phrases):
 
 # Create the documentation button
 def open_documentation():
-    os.system('open ITC_Documentation.pdf')
+    os.system('open resources/ITC_Documentation.pdf')
 
 doc_button = Button(
     root,
@@ -122,5 +134,8 @@ meaning_label = tk.Label(
     fg='#ffffff'
 )
 meaning_label.place(relx=0.5, rely=0.9, anchor=tk.CENTER)
+
+
+
 
 root.mainloop()
