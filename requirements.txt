@@ -7,4 +7,4 @@ pyperclip~=1.8.2
 customtkinter~=5.1.2
 Pillow~=9.4.0
 darkdetect~=0.8.0
-pyinstaller~=5.8.0
+pyinstaller~=5.13.1
