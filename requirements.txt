@@ -5,6 +5,6 @@ setuptools~=65.5.1
 altgraph~=0.17.3
 pyperclip~=1.8.2
 customtkinter~=5.1.2
-Pillow~=9.4.0
+Pillow~=10.2.0
 darkdetect~=0.8.0
 pyinstaller~=5.8.0
