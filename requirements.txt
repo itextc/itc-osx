@@ -7,5 +7,5 @@ pyperclip~=1.8.2
 customtkinter~=5.1.2
 Pillow~=10.3.0
 darkdetect~=0.8.0
-pyinstaller~=5.8.0
+pyinstaller~=6.0.0
 zipp>=3.19.1 # not directly required, pinned by Snyk to avoid a vulnerability
