@@ -1,11 +1,18 @@
 /* App.css - Styles matching the original Python application */
 
+@font-face {
+  font-family: "Calibri";
+  src: url("../calibri.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
 .app {
   width: 100%;
   height: 100vh;
   background-color: #1b1c27;
   color: #ffffff;
-  font-family: 'Calibri', sans-serif;
+  font-family: "Calibri", sans-serif;
   position: relative;
   overflow: hidden;
 }
@@ -23,7 +30,7 @@
   background-color: #1b1c27;
   color: #ffffff;
   border: none;
-  font-family: 'Calibri', sans-serif;
+  font-family: "Calibri", sans-serif;
   font-size: 14px;
   width: 140px;
   height: 35px;
@@ -33,14 +40,14 @@
 
 .doc-button:hover {
   background-color: #393c4f;
-  color: #898DA9;
+  color: #898da9;
 }
 
 .made-by-button {
   background-color: #1b1c27;
   color: #ffffff;
   border: none;
-  font-family: 'Calibri', sans-serif;
+  font-family: "Calibri", sans-serif;
   font-size: 14px;
   width: 150px;
   cursor: pointer;
@@ -51,7 +58,7 @@
 
 .made-by-button:hover {
   background-color: #393c4f;
-  color: #898DA9;
+  color: #898da9;
 }
 
 .phrases-grid {
@@ -65,7 +72,7 @@
   background-color: #1b1c27;
   color: #ffffff;
   border: none;
-  font-family: 'Calibri', sans-serif;
+  font-family: "Calibri", sans-serif;
   font-size: 30px;
   height: 65px;
   cursor: pointer;
@@ -81,7 +88,7 @@
 
 .phrase-button:hover {
   background-color: #393c4f;
-  color: #898DA9;
+  color: #898da9;
 }
 
 .meaning-display {
@@ -89,7 +96,7 @@
   bottom: 10%;
   left: 50%;
   transform: translateX(-50%);
-  font-family: 'Calibri', sans-serif;
+  font-family: "Calibri", sans-serif;
   font-size: 20px;
   color: #ffffff;
   text-align: center;
@@ -102,7 +109,7 @@
   bottom: 5%;
   left: 50%;
   transform: translateX(-50%);
-  font-family: 'Calibri', sans-serif;
+  font-family: "Calibri", sans-serif;
   font-size: 14px;
   color: #ffffff;
   text-align: center;
@@ -118,7 +125,7 @@
   background-color: #1b1c27;
   color: #ffffff;
   border: none;
-  font-family: 'Calibri', sans-serif;
+  font-family: "Calibri", sans-serif;
   font-size: 14px;
   width: 140px;
   cursor: pointer;
@@ -127,7 +134,7 @@
 
 .update-button:hover {
   background-color: #393c4f;
-  color: #898DA9;
+  color: #898da9;
 }
 
 /* Responsive adjustments */
@@ -137,7 +144,7 @@
     height: 55px;
     min-width: 100px;
   }
-  
+
   .meaning-display {
     font-size: 18px;
   }
@@ -149,7 +156,7 @@
     height: 45px;
     min-width: 80px;
   }
-  
+
   .meaning-display {
     font-size: 16px;
   }

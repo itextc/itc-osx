@@ -9,6 +9,8 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
+    minWidth: 800,
+    minHeight: 600,
     x: 500,
     y: 280,
     webPreferences: {
@@ -23,8 +25,11 @@ function createWindow() {
   });
 
   // Load the React app
-  if (process.env.NODE_ENV === 'development') {
-    mainWindow.loadURL('http://localhost:3000');
+  const isDev = process.env.NODE_ENV === 'development';
+
+  if (isDev) {
+    // In development, load from the built files in dist folder
+    mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
     mainWindow.webContents.openDevTools();
   } else {
     mainWindow.loadFile(path.join(__dirname, '../dist/index.html'));
