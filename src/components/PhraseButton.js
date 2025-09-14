@@ -13,9 +13,21 @@ function PhraseButton({ phrase, meaning, onCopy, onMouseEnter, onMouseLeave }) {
     onMouseLeave();
   };
 
+  // Check if the phrase is a symbol (short phrases, typically Unicode symbols)
+  const isSymbol = phrase.length <= 2;
+  // Check if this is the Basmala
+  const isBasmala = phrase === '﷽';
+
+  let buttonClass = 'phrase-button';
+  if (isBasmala) {
+    buttonClass += ' basmala-button';
+  } else if (isSymbol) {
+    buttonClass += ' symbol-button';
+  }
+
   return (
     <button
-      className="phrase-button"
+      className={buttonClass}
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}

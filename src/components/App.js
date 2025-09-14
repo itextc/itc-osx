@@ -105,10 +105,10 @@ function App() {
       {/* Footer */}
       <footer className="app-footer">
         <div className="credits">
-          <span className="credits-label">Made by</span>
-          <div className="credits-names">
-            Nāsir Ātif & Abdur-Rahman Bilal
-          </div>
+          Made by Nāsir Ātif & Abdur-Rahman Bilal
+        </div>
+        <div className="version-info">
+          Version 1.0
         </div>
         <button className="footer-button" onClick={checkForUpdates}>
           Check for Updates
