@@ -49,7 +49,7 @@ function App() {
       const response = await fetch('https://raw.githubusercontent.com/itextc/itc-osx/main/version.txt');
       const remoteVersion = await response.text();
       const localVersion = '1.0'; // You can read this from package.json or version.txt
-      
+
       if (localVersion.trim() !== remoteVersion.trim()) {
         const shouldUpdate = window.confirm(
           'A new version of Islāmic Text Copier is available. Please download the latest version from the GitHub repository.\n\nDo you want to visit the GitHub repository to download the latest version?'
@@ -72,44 +72,52 @@ function App() {
 
   return (
     <div className="app">
-      <div className="app-header">
-        <button className="doc-button" onClick={openDocumentation}>
+      {/* Top Navigation */}
+      <header className="app-header">
+        <button className="nav-button" onClick={openDocumentation}>
           Documentation
         </button>
-        <button className="made-by-button" onClick={openWebsite}>
-          Made by<br/>
-          Nāsir Ātif<br/>
-          &<br/>
-          Abdur-Rahman Bilal
+        <button className="nav-button about-button" onClick={openWebsite}>
+          About This App
         </button>
-      </div>
+      </header>
 
-      <div className="phrases-grid">
-        {arabicPhrases.map((item, index) => (
-          <PhraseButton
-            key={index}
-            phrase={item.phrase}
-            meaning={item.meaning}
-            onCopy={copyToClipboard}
-            onMouseEnter={showMeaning}
-            onMouseLeave={hideMeaning}
-            gridPosition={index}
-          />
-        ))}
-      </div>
+      {/* Main Content */}
+      <main className="main-content">
+        <div className="phrases-grid">
+          {arabicPhrases.map((item, index) => (
+            <PhraseButton
+              key={index}
+              phrase={item.phrase}
+              meaning={item.meaning}
+              onCopy={copyToClipboard}
+              onMouseEnter={showMeaning}
+              onMouseLeave={hideMeaning}
+            />
+          ))}
+        </div>
 
-      <div className="meaning-display">
-        {meaningText}
-      </div>
+        <div className={`meaning-display ${meaningText ? 'visible' : ''}`}>
+          {meaningText || 'Hover over a phrase to see its meaning'}
+        </div>
+      </main>
 
-      <div className="status-display">
+      {/* Footer */}
+      <footer className="app-footer">
+        <div className="credits">
+          <span className="credits-label">Made by</span>
+          <div className="credits-names">
+            Nāsir Ātif & Abdur-Rahman Bilal
+          </div>
+        </div>
+        <button className="footer-button" onClick={checkForUpdates}>
+          Check for Updates
+        </button>
+      </footer>
+
+      {/* Status Toast */}
+      <div className={`status-display ${statusMessage ? 'visible' : ''}`}>
         {statusMessage}
-      </div>
-
-      <div className="app-footer">
-        <button className="update-button" onClick={checkForUpdates}>
-          Check for updates
-        </button>
       </div>
     </div>
   );
