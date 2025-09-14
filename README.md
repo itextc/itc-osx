@@ -1,13 +1,118 @@
 # Islāmic Text Copier
-This is a simple text copying program. The goal of this app is simple; give the user easy access to commonly used Arabic texts on their PC, such as Subḥānahu wa Taʾālá and Sallá Allāhu ʿAlayhī wa as-Salam.
 
-The release can be downloaded at it's official home page: https://itc.nasiratif.net.
+A cross-platform desktop application built with React and Electron that provides easy access to commonly used Arabic Islamic texts such as Subḥānahu wa Taʾālá and Sallá Allāhu ʿAlayhī wa as-Salam.
 
-# Contributions
-I decided to open-source this program so that anyone can contribute to it, like fixing bugs and adding more texts. It is programmed entirely in Python, so make sure you have knowledge of it and have it installed on your PC.
+## Features
 
-To setup ITC, you'll need to have a few Python modules already installed, like Pyperclip, Keyboard, ctypes, Pillow and pyglet.
+- **16 Islamic Arabic phrases** with English transliterations and meanings
+- **One-click copying** to clipboard
+- **Hover tooltips** showing meanings
+- **Cross-platform support** (macOS, Windows, Linux)
+- **Update checking** functionality
+- **Modern UI** with dark theme
+- **Documentation access**
 
-You can build ITC in many different ways, though I prefer Auto PY to EXE. The Inno Setup source is also included (you will need to change the directories inside however).
+## Screenshots
 
-بارك الله فيك
+The application maintains the same visual design as the original Python version with a dark theme (#1b1c27) and grid layout of Arabic phrase buttons.
+
+## Download
+
+The latest release can be downloaded from the [official website](https://itc.nasiratif.net) or from the [GitHub releases page](https://github.com/itextc/itc-osx/releases).
+
+## Development
+
+### Prerequisites
+
+- Node.js 18+ and npm
+- Git
+
+### Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/itextc/itc-osx.git
+cd itc-osx
+
+# Install dependencies
+npm install
+
+# Run in development mode
+npm run dev
+```
+
+### Building
+
+```bash
+# Build for production
+npm run build
+
+# Package for distribution
+npm run dist
+
+# Platform-specific builds
+npm run dist-mac    # macOS DMG
+npm run dist-win    # Windows installer
+npm run dist-linux  # Linux AppImage
+```
+
+## Technology Stack
+
+- **Frontend:** React 19.1.1
+- **Desktop Framework:** Electron 38.1.0
+- **Build System:** Webpack 5
+- **Package Manager:** npm
+- **Build Tool:** electron-builder
+
+## Migration from Python
+
+This project has been migrated from Python/macOS to React/Electron for improved cross-platform support and better developer experience. See [MIGRATION.md](MIGRATION.md) for detailed migration documentation.
+
+### Legacy Python Version
+
+The original Python implementation files are still present for reference:
+- `itc.py` - Original tkinter implementation
+- `ctk_itc.py` - CustomTkinter implementation  
+- `setup.py` - py2app build configuration
+- `requirements.txt` - Python dependencies
+
+## Contributing
+
+Contributions are welcome! This includes:
+- Bug fixes
+- Adding more Islamic texts
+- UI/UX improvements
+- Cross-platform testing
+- Documentation improvements
+
+### Development Guidelines
+
+1. Maintain the existing visual design and user experience
+2. Ensure cross-platform compatibility
+3. Follow React best practices
+4. Test thoroughly on all supported platforms
+
+## Build Issues Resolution
+
+The migration resolves several build issues from the Python version:
+- ✅ Python dependency conflicts (pyinstaller version issues)
+- ✅ macOS-only build limitations
+- ✅ Complex py2app configuration
+- ✅ Platform-specific environment issues
+
+## License
+
+This project is licensed under the GPL-3.0 License - see the [LICENSE](LICENSE) file for details.
+
+## Authors
+
+- **Nāsir Ātif** - Original concept and development
+- **Abdur-Rahman Bilal** - Development and contributions
+
+## Acknowledgments
+
+بارك الله فيك (May Allāh bless you) to all contributors and users of this application.
+
+---
+
+*For technical support or feature requests, please open an issue on GitHub.*
