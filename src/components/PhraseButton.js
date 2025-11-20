@@ -32,6 +32,9 @@ function PhraseButton({ phrase, meaning, onCopy, onMouseEnter, onMouseLeave }) {
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      aria-label={`Copy ${meaning}`}
+      title={meaning}
+      type="button"
     >
       {phrase}
     </button>

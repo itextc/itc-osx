@@ -137,8 +137,8 @@ function App() {
       </header>
 
       {/* Main Content */}
-      <main className="main-content">
-        <div className="phrases-grid">
+      <main className="main-content" id="main-content">
+        <div className="phrases-grid" role="grid" aria-label="Islamic phrases">
           {arabicPhrases.map((item, index) => (
             <PhraseButton
               key={index}
@@ -151,7 +151,12 @@ function App() {
           ))}
         </div>
 
-        <div className={`meaning-display ${meaningText ? 'visible' : ''}`}>
+        <div
+          className={`meaning-display ${meaningText ? 'visible' : ''}`}
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        >
           {meaningText || 'Hover over a phrase to see its meaning'}
         </div>
       </main>
@@ -170,7 +175,12 @@ function App() {
       </footer>
 
       {/* Status Toast */}
-      <div className={`status-display ${statusMessage ? 'visible' : ''}`}>
+      <div
+        className={`status-display ${statusMessage ? 'visible' : ''}`}
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
         {statusMessage}
       </div>
     </div>
