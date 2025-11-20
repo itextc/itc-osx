@@ -41,6 +41,40 @@ function App() {
     }
   }, [statusMessage]);
 
+  // Keyboard shortcuts for quick copying
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      // Check if user is typing in an input field
+      const isInputFocused =
+        e.target.tagName === 'INPUT' ||
+        e.target.tagName === 'TEXTAREA' ||
+        e.target.isContentEditable;
+
+      if (isInputFocused) return;
+
+      // Ctrl/Cmd + number keys (1-9) to copy corresponding phrase
+      if ((e.ctrlKey || e.metaKey) && e.key >= '1' && e.key <= '9') {
+        e.preventDefault();
+        const index = parseInt(e.key) - 1;
+        if (arabicPhrases[index]) {
+          copyToClipboard(arabicPhrases[index].phrase);
+        }
+      }
+
+      // Ctrl/Cmd + 0 to copy the last phrase (Basmala)
+      if ((e.ctrlKey || e.metaKey) && e.key === '0') {
+        e.preventDefault();
+        const lastIndex = arabicPhrases.length - 1;
+        if (arabicPhrases[lastIndex]) {
+          copyToClipboard(arabicPhrases[lastIndex].phrase);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [arabicPhrases]);
+
   const copyToClipboard = async (phrase) => {
     try {
       await navigator.clipboard.writeText(phrase);
