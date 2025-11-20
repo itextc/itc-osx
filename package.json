@@ -15,7 +15,11 @@
     "dist-mac": "npm run build && electron-builder --mac",
     "dist-win": "npm run build && electron-builder --win",
     "dist-linux": "npm run build && electron-builder --linux",
-    "pack": "electron-builder --dir"
+    "pack": "electron-builder --dir",
+    "lint": "eslint src/",
+    "lint:fix": "eslint src/ --fix",
+    "format": "prettier --write \"src/**/*.{js,jsx,css}\"",
+    "format:check": "prettier --check \"src/**/*.{js,jsx,css}\""
   },
   "build": {
     "appId": "com.itextc.islamic-text-copier",
@@ -62,7 +66,12 @@
     "css-loader": "^7.1.2",
     "electron": "^38.1.0",
     "electron-builder": "^26.0.12",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^7.0.1",
     "html-webpack-plugin": "^5.6.4",
+    "prettier": "^3.6.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "style-loader": "^4.0.0",
