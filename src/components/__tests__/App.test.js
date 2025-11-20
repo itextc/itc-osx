@@ -54,7 +54,7 @@ describe('App Component', () => {
       const firstPhrase = arabicPhrases[0].phrase;
 
       // Find and click the first phrase button
-      const phraseButton = screen.getByLabelText(new RegExp(arabicPhrases[0].meaning));
+      const phraseButton = screen.getByText(arabicPhrases[0].phrase);
       fireEvent.click(phraseButton);
 
       // Verify clipboard API was called
@@ -65,7 +65,7 @@ describe('App Component', () => {
       render(<App />);
       const firstPhrase = arabicPhrases[0].phrase;
 
-      const phraseButton = screen.getByLabelText(new RegExp(arabicPhrases[0].meaning));
+      const phraseButton = screen.getByText(arabicPhrases[0].phrase);
       fireEvent.click(phraseButton);
 
       // Status message should appear
@@ -78,7 +78,7 @@ describe('App Component', () => {
       jest.useFakeTimers();
       render(<App />);
 
-      const phraseButton = screen.getByLabelText(new RegExp(arabicPhrases[0].meaning));
+      const phraseButton = screen.getByText(arabicPhrases[0].phrase);
       fireEvent.click(phraseButton);
 
       // Status message should be visible immediately
@@ -101,7 +101,7 @@ describe('App Component', () => {
       navigator.clipboard.writeText.mockRejectedValueOnce(new Error('Clipboard error'));
 
       render(<App />);
-      const phraseButton = screen.getByLabelText(new RegExp(arabicPhrases[0].meaning));
+      const phraseButton = screen.getByText(arabicPhrases[0].phrase);
       fireEvent.click(phraseButton);
 
       // Error message should appear
@@ -116,7 +116,7 @@ describe('App Component', () => {
       render(<App />);
       const firstPhrase = arabicPhrases[0];
 
-      const phraseButton = screen.getByLabelText(new RegExp(firstPhrase.meaning));
+      const phraseButton = screen.getByText(firstPhrase.phrase);
       fireEvent.mouseEnter(phraseButton);
 
       // Meaning should be displayed
@@ -127,7 +127,7 @@ describe('App Component', () => {
       render(<App />);
       const firstPhrase = arabicPhrases[0];
 
-      const phraseButton = screen.getByLabelText(new RegExp(firstPhrase.meaning));
+      const phraseButton = screen.getByText(firstPhrase.phrase);
 
       // Show meaning
       fireEvent.mouseEnter(phraseButton);
@@ -145,8 +145,8 @@ describe('App Component', () => {
       const firstPhrase = arabicPhrases[0];
       const secondPhrase = arabicPhrases[1];
 
-      const firstButton = screen.getByLabelText(new RegExp(firstPhrase.meaning));
-      const secondButton = screen.getByLabelText(new RegExp(secondPhrase.meaning));
+      const firstButton = screen.getByText(firstPhrase.phrase);
+      const secondButton = screen.getByText(secondPhrase.phrase);
 
       // Hover over first button
       fireEvent.mouseEnter(firstButton);
@@ -270,7 +270,8 @@ describe('App Component', () => {
 
     it('has ARIA live region for status messages', () => {
       render(<App />);
-      const statusDisplay = screen.getByRole('status', { hidden: true });
+      const statusDisplays = screen.getAllByRole('status', { hidden: true });
+      const statusDisplay = statusDisplays.find(el => el.className.includes('status-display'));
       expect(statusDisplay).toHaveAttribute('aria-live', 'polite');
       expect(statusDisplay).toHaveAttribute('aria-atomic', 'true');
     });
@@ -294,7 +295,7 @@ describe('App Component', () => {
       const firstPhrase = arabicPhrases[0];
 
       // 1. Hover to see meaning
-      const phraseButton = screen.getByLabelText(new RegExp(firstPhrase.meaning));
+      const phraseButton = screen.getByText(firstPhrase.phrase);
       fireEvent.mouseEnter(phraseButton);
       expect(screen.getByText(firstPhrase.meaning)).toBeInTheDocument();
 
@@ -314,14 +315,14 @@ describe('App Component', () => {
       render(<App />);
 
       // Copy first phrase
-      const firstButton = screen.getByLabelText(new RegExp(arabicPhrases[0].meaning));
+      const firstButton = screen.getByText(arabicPhrases[0].phrase);
       fireEvent.click(firstButton);
       await waitFor(() => {
         expect(screen.getByText(/copied to clipboard/i)).toBeInTheDocument();
       });
 
       // Copy second phrase
-      const secondButton = screen.getByLabelText(new RegExp(arabicPhrases[1].meaning));
+      const secondButton = screen.getByText(arabicPhrases[1].phrase);
       fireEvent.click(secondButton);
       await waitFor(() => {
         expect(screen.getByText(/copied to clipboard/i)).toBeInTheDocument();

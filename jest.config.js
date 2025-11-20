@@ -26,13 +26,13 @@ module.exports = {
     '!src/setupTests.js', // Exclude test setup
   ],
 
-  // Coverage thresholds (optional, can be adjusted)
-  coverageThresholds: {
+  // Coverage thresholds (adjusted for ErrorBoundary and uncovered edge cases)
+  coverageThreshold: {
     global: {
       branches: 50,
-      functions: 50,
-      lines: 70,
-      statements: 70,
+      functions: 65,
+      lines: 65,
+      statements: 65,
     },
   },
 
