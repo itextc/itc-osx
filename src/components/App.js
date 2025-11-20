@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { arabicPhrases } from '../data/phrases';
 import PhraseButton from './PhraseButton';
 import './App.css';
@@ -10,6 +10,24 @@ const electronAPI = window.electronAPI || null;
 function App() {
   const [statusMessage, setStatusMessage] = useState('');
   const [meaningText, setMeaningText] = useState('');
+  const [appVersion, setAppVersion] = useState('1.0.0');
+
+  // Fetch app version from Electron main process on mount
+  useEffect(() => {
+    const fetchVersion = async () => {
+      if (electronAPI && electronAPI.getVersion) {
+        try {
+          const version = await electronAPI.getVersion();
+          setAppVersion(version);
+        } catch (err) {
+          console.error('Failed to fetch version:', err);
+          // Keep default version if fetch fails
+        }
+      }
+    };
+
+    fetchVersion();
+  }, []);
 
   const copyToClipboard = async (phrase) => {
     try {
@@ -66,7 +84,7 @@ function App() {
     try {
       const response = await fetch('https://raw.githubusercontent.com/itextc/itc-osx/main/version.txt');
       const remoteVersion = await response.text();
-      const localVersion = '1.0'; // You can read this from package.json or version.txt
+      const localVersion = appVersion; // Fetched from package.json via Electron API
 
       if (localVersion.trim() !== remoteVersion.trim()) {
         const shouldUpdate = window.confirm(
@@ -132,7 +150,7 @@ function App() {
           Made by Nāsir Ātif & Abdur-Rahman Bilal
         </div>
         <div className="version-info">
-          Version 1.0
+          Version {appVersion}
         </div>
         <button className="footer-button" onClick={checkForUpdates}>
           Check for Updates
