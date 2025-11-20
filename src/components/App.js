@@ -29,11 +29,23 @@ function App() {
     fetchVersion();
   }, []);
 
+  // Auto-hide status message after 3 seconds with proper cleanup
+  useEffect(() => {
+    if (statusMessage) {
+      const timer = setTimeout(() => {
+        setStatusMessage('');
+      }, 3000);
+
+      // Cleanup function to prevent memory leaks
+      return () => clearTimeout(timer);
+    }
+  }, [statusMessage]);
+
   const copyToClipboard = async (phrase) => {
     try {
       await navigator.clipboard.writeText(phrase);
       setStatusMessage(`${phrase} copied to clipboard`);
-      setTimeout(() => setStatusMessage(''), 3000);
+      // Timeout now handled by useEffect above with proper cleanup
     } catch (err) {
       console.error('Failed to copy: ', err);
       setStatusMessage('Failed to copy to clipboard');
