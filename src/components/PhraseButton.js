@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 function PhraseButton({ phrase, meaning, onCopy, onMouseEnter, onMouseLeave }) {
   const handleClick = () => {
@@ -36,5 +37,13 @@ function PhraseButton({ phrase, meaning, onCopy, onMouseEnter, onMouseLeave }) {
     </button>
   );
 }
+
+PhraseButton.propTypes = {
+  phrase: PropTypes.string.isRequired,
+  meaning: PropTypes.string.isRequired,
+  onCopy: PropTypes.func.isRequired,
+  onMouseEnter: PropTypes.func.isRequired,
+  onMouseLeave: PropTypes.func.isRequired,
+};
 
 export default PhraseButton;
