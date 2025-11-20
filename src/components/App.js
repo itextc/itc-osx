@@ -3,7 +3,9 @@ import { arabicPhrases } from '../data/phrases';
 import PhraseButton from './PhraseButton';
 import './App.css';
 
-const { shell } = window.require ? window.require('electron') : { shell: null };
+// Access secure Electron API exposed through preload script
+// Falls back gracefully for browser mode
+const electronAPI = window.electronAPI || null;
 
 function App() {
   const [statusMessage, setStatusMessage] = useState('');
@@ -28,19 +30,35 @@ function App() {
     setMeaningText('');
   };
 
-  const openDocumentation = () => {
-    if (shell) {
-      shell.openPath('resources/ITC_Documentation.pdf');
+  const openDocumentation = async () => {
+    if (electronAPI) {
+      try {
+        const error = await electronAPI.openPath('resources/ITC_Documentation.pdf');
+        if (error) {
+          console.error('Failed to open documentation:', error);
+          alert('Failed to open documentation. Please check if the file exists.');
+        }
+      } catch (err) {
+        console.error('Error opening documentation:', err);
+        alert('Failed to open documentation');
+      }
     } else {
       alert('Documentation feature not available in browser mode');
     }
   };
 
-  const openWebsite = () => {
-    if (shell) {
-      shell.openExternal('https://github.com/itextc/itc-osx');
+  const openWebsite = async () => {
+    const url = 'https://github.com/itextc/itc-osx';
+    if (electronAPI) {
+      try {
+        await electronAPI.openExternal(url);
+      } catch (err) {
+        console.error('Error opening website:', err);
+        // Fallback to window.open
+        window.open(url, '_blank');
+      }
     } else {
-      window.open('https://github.com/itextc/itc-osx', '_blank');
+      window.open(url, '_blank');
     }
   };
 
@@ -55,10 +73,16 @@ function App() {
           'A new version of Islāmic Text Copier is available. Please download the latest version from the GitHub repository.\n\nDo you want to visit the GitHub repository to download the latest version?'
         );
         if (shouldUpdate) {
-          if (shell) {
-            shell.openExternal('https://github.com/itextc/itc-osx/releases');
+          const releasesUrl = 'https://github.com/itextc/itc-osx/releases';
+          if (electronAPI) {
+            try {
+              await electronAPI.openExternal(releasesUrl);
+            } catch (err) {
+              console.error('Error opening releases page:', err);
+              window.open(releasesUrl, '_blank');
+            }
           } else {
-            window.open('https://github.com/itextc/itc-osx/releases', '_blank');
+            window.open(releasesUrl, '_blank');
           }
         }
       } else {
