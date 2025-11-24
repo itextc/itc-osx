@@ -161,13 +161,18 @@ function App() {
   return (
     <div className="app">
       {/* Top Navigation */}
-      <header className="app-header">
-        <button className="nav-button" onClick={openDocumentation}>
-          Documentation
-        </button>
-        <button className="nav-button about-button" onClick={openWebsite}>
-          About This App
-        </button>
+      <header className="app-header" role="banner">
+        <div className="header-side">
+          <button className="nav-button" onClick={openDocumentation}>
+            Documentation
+          </button>
+        </div>
+        <h1 className="app-title" aria-label="Islāmic Text Copier heading">Islāmic Text Copier</h1>
+        <div className="header-side">
+          <button className="nav-button about-button" onClick={openWebsite}>
+            About This App
+          </button>
+        </div>
       </header>
 
       {/* Main Content */}

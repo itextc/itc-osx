@@ -67,6 +67,29 @@
   position: relative;
 }
 
+/* Centered title independent of side button widths */
+.app-title {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0;
+  font-size: var(--font-size-2xl);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--text-primary);
+  pointer-events: none; /* Allow clicks to pass to buttons */
+  text-align: center;
+}
+
+.header-side { display: flex; align-items: center; }
+
+@media (max-width: 600px) {
+  .app-title {
+    font-size: var(--font-size-xl);
+  }
+}
+
 .app-header::after {
   content: "";
   position: absolute;
