@@ -146,11 +146,8 @@
 }
 
 /* Special grid layout for Basmala button */
-.phrases-grid .phrase-button:last-child {
-  grid-column: 2 / span 2;
-  width: 100%;
-  max-width: none;
-}
+/* Ensure all buttons occupy a single grid cell uniformly */
+/* (Removed special spanning for the last button/Basmala) */
 
 .phrase-button {
   background: rgba(255, 255, 255, 0.03);
@@ -269,11 +266,7 @@
     max-width: 700px;
   }
 
-  /* Basmala spans 3 columns in mobile 3-column layout */
-  .phrases-grid .phrase-button:last-child {
-    grid-column: span 3;
-    max-width: calc(66.67% - var(--spacing-sm));
-  }
+  /* All buttons remain single-cell in 3-column layout */
 
   .phrase-button {
     height: 90px;
@@ -308,11 +301,7 @@
     padding: var(--spacing-md);
   }
 
-  /* Basmala spans 2 columns in mobile 2-column layout */
-  .phrases-grid .phrase-button:last-child {
-    grid-column: span 2;
-    max-width: calc(100% - var(--spacing-md));
-  }
+  /* All buttons remain single-cell in 2-column layout */
 
   .phrase-button {
     font-size: var(--font-size-lg);
