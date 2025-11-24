@@ -34,7 +34,7 @@
     "files": [
       "src/main.js",
       "dist/**/*",
-      "resources/**/*",
+      "resources/ITC_Documentation.pdf",
       "icon.icns",
       "icon.ico"
     ],

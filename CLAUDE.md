@@ -75,11 +75,7 @@ This documentation is maintained by:
 ├── version.txt                     # Version number (221)
 ├── icon.icns & icon.ico            # Platform-specific icons
 │
-└── Legacy Python files (REFERENCE ONLY, NOT ACTIVE):
-    ├── itc.py                      # Original tkinter implementation
-    ├── ctk_itc.py                  # CustomTkinter implementation
-    ├── setup.py                    # py2app build configuration
-    └── requirements.txt            # Python dependencies
+└── Legacy Python files: Removed from repository (see MIGRATION.md)
 ```
 
 ### Key File Purposes
@@ -246,16 +242,9 @@ if (isDev) {
 - **Fetch API**: For version checking from GitHub
 - **Electron APIs**: `shell.openExternal()`, `shell.openPath()`
 
-### Legacy Python Stack (Reference Only)
+### Legacy Python Stack (Historical)
 
-The repository contains legacy Python files for reference:
-- Python 3.12
-- tkinter / customtkinter 5.1.2
-- tkmacosx (macOS-specific widgets)
-- pyperclip 1.8.2 (clipboard)
-- py2app 0.28.5 / pyinstaller 5.8.0 (packaging)
-
-**Note**: These files are NOT part of the active codebase but preserved for migration reference.
+Previously, a Python/tkinter implementation existed for macOS packaging via py2app/pyinstaller. It has been removed to simplify the repository and packaging. Historical details remain in MIGRATION.md.
 
 ---
 
@@ -740,7 +729,7 @@ devtool: 'source-map'  // Enables debugging in DevTools
     "files": [
       "src/main.js",
       "dist/**/*",
-      "resources/**/*",
+      "resources/ITC_Documentation.pdf",
       "icon.icns",
       "icon.ico"
     ],
@@ -1198,7 +1187,7 @@ npm run pack   # Test electron packaging without installers
 - ❌ Add unnecessary dependencies
 - ❌ Break existing features
 - ❌ Change visual design without approval
-- ❌ Remove legacy Python files (kept for reference)
+- ❌ Reintroduce removed legacy Python files into active codebase
 - ❌ Commit `node_modules/` or `dist/`
 - ❌ Introduce security vulnerabilities
 
