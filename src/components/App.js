@@ -11,7 +11,7 @@ const electronAPI = window.electronAPI || null;
 function App() {
   const [statusMessage, setStatusMessage] = useState('');
   const [meaningText, setMeaningText] = useState('');
-  const [appVersion, setAppVersion] = useState('1.0.0');
+  const [appVersion, setAppVersion] = useState('0.2.0');
   const [showDocs, setShowDocs] = useState(false);
 
   // Fetch app version from Electron main process on mount
