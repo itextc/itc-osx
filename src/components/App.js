@@ -40,6 +40,7 @@ function App() {
   const [showSettings, setShowSettings] = useState(false);
   const [settings, setSettings] = useState(loadSettings);
   const [globalNotification, setGlobalNotification] = useState('');
+  const [updateStatus, setUpdateStatus] = useState('');
 
   // Fetch app version from Electron main process on mount
   useEffect(() => {
@@ -120,6 +121,39 @@ function App() {
       return () => clearTimeout(timer);
     }
   }, [globalNotification]);
+
+  // Listen for update status from electron-updater
+  useEffect(() => {
+    if (!electronAPI || !electronAPI.onUpdateStatus) return;
+
+    const cleanup = electronAPI.onUpdateStatus(({ status, version, percent, error }) => {
+      switch (status) {
+        case 'checking':
+          setUpdateStatus('Checking for updates...');
+          break;
+        case 'available':
+          setUpdateStatus(`Update ${version} available`);
+          break;
+        case 'not-available':
+          setUpdateStatus('');
+          break;
+        case 'downloading':
+          setUpdateStatus(`Downloading update: ${Math.round(percent || 0)}%`);
+          break;
+        case 'downloaded':
+          setUpdateStatus(`Update ${version} ready to install`);
+          break;
+        case 'error':
+          setUpdateStatus(`Update error: ${error}`);
+          setTimeout(() => setUpdateStatus(''), 5000);
+          break;
+        default:
+          break;
+      }
+    });
+
+    return cleanup;
+  }, []);
 
   // Auto-hide status message after 3 seconds with proper cleanup
   useEffect(() => {
@@ -226,27 +260,37 @@ function App() {
   };
 
   const checkForUpdates = async () => {
+    // Use electron-updater if available
+    if (electronAPI && electronAPI.checkForUpdates) {
+      try {
+        setUpdateStatus('Checking for updates...');
+        const result = await electronAPI.checkForUpdates();
+        if (!result.success) {
+          setUpdateStatus(`Update check failed: ${result.error}`);
+          setTimeout(() => setUpdateStatus(''), 5000);
+        }
+        // Status updates will come through onUpdateStatus listener
+      } catch (error) {
+        console.error('Update check failed:', error);
+        setUpdateStatus('Failed to check for updates');
+        setTimeout(() => setUpdateStatus(''), 5000);
+      }
+      return;
+    }
+
+    // Fallback to manual version check for browser mode
     try {
       const response = await fetch('https://raw.githubusercontent.com/itextc/itc-osx/main/version.txt');
       const remoteVersion = await response.text();
-      const localVersion = appVersion; // Fetched from package.json via Electron API
+      const localVersion = appVersion;
 
       if (localVersion.trim() !== remoteVersion.trim()) {
         const shouldUpdate = window.confirm(
-          'A new version of Islāmic Text Copier is available. Please download the latest version from the GitHub repository.\n\nDo you want to visit the GitHub repository to download the latest version?'
+          'A new version of Islāmic Text Copier is available. Would you like to visit the GitHub releases page?'
         );
         if (shouldUpdate) {
           const releasesUrl = 'https://github.com/itextc/itc-osx/releases';
-          if (electronAPI) {
-            try {
-              await electronAPI.openExternal(releasesUrl);
-            } catch (err) {
-              console.error('Error opening releases page:', err);
-              window.open(releasesUrl, '_blank');
-            }
-          } else {
-            window.open(releasesUrl, '_blank');
-          }
+          window.open(releasesUrl, '_blank');
         }
       } else {
         alert('You are using the latest version of Islāmic Text Copier.');
@@ -309,6 +353,7 @@ function App() {
         </div>
         <div className="version-info">
           Version {appVersion}
+          {updateStatus && <span className="update-status"> • {updateStatus}</span>}
         </div>
         <button className="footer-button" onClick={checkForUpdates}>
           Check for Updates

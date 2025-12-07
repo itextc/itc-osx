@@ -68,6 +68,34 @@ contextBridge.exposeInMainWorld('electronAPI', {
   },
 
   /**
+   * Check for updates using electron-updater
+   * @returns {Promise<{success: boolean, error?: string}>}
+   */
+  checkForUpdates: () => ipcRenderer.invoke('check-for-updates'),
+
+  /**
+   * Download available update
+   * @returns {Promise<{success: boolean, error?: string}>}
+   */
+  downloadUpdate: () => ipcRenderer.invoke('download-update'),
+
+  /**
+   * Quit and install the downloaded update
+   */
+  quitAndInstall: () => ipcRenderer.invoke('quit-and-install'),
+
+  /**
+   * Listen for update status events
+   * @param {Function} callback - Called with { status, ...info } when update status changes
+   * @returns {Function} - Cleanup function to remove the listener
+   */
+  onUpdateStatus: (callback) => {
+    const handler = (event, data) => callback(data);
+    ipcRenderer.on('update-status', handler);
+    return () => ipcRenderer.removeListener('update-status', handler);
+  },
+
+  /**
    * Checks if running in Electron environment
    * @returns {boolean}
    */

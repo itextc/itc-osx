@@ -1,5 +1,6 @@
-const { app, BrowserWindow, shell, ipcMain, globalShortcut, clipboard } = require('electron');
+const { app, BrowserWindow, shell, ipcMain, globalShortcut, clipboard, dialog } = require('electron');
 const path = require('path');
+const { autoUpdater } = require('electron-updater');
 
 // Keep a global reference of the window object
 let mainWindow;
@@ -54,7 +55,74 @@ function createWindow() {
 }
 
 // This method will be called when Electron has finished initialization
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+  createWindow();
+  
+  // Configure auto-updater
+  autoUpdater.autoDownload = false;
+  autoUpdater.autoInstallOnAppQuit = true;
+  
+  // Check for updates after app is ready
+  autoUpdater.checkForUpdates().catch(err => {
+    console.log('Auto-update check failed:', err.message);
+  });
+});
+
+// Send update status to renderer
+function sendUpdateStatus(status, info = {}) {
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    mainWindow.webContents.send('update-status', { status, ...info });
+  }
+}
+
+// Auto-updater events
+autoUpdater.on('checking-for-update', () => {
+  sendUpdateStatus('checking');
+});
+
+autoUpdater.on('update-available', (info) => {
+  sendUpdateStatus('available', { version: info.version });
+  dialog.showMessageBox(mainWindow, {
+    type: 'info',
+    title: 'Update Available',
+    message: `A new version (${info.version}) is available. Would you like to download it now?`,
+    buttons: ['Download', 'Later'],
+    defaultId: 0,
+    cancelId: 1
+  }).then(result => {
+    if (result.response === 0) {
+      autoUpdater.downloadUpdate();
+    }
+  });
+});
+
+autoUpdater.on('update-not-available', () => {
+  sendUpdateStatus('not-available');
+});
+
+autoUpdater.on('error', (err) => {
+  sendUpdateStatus('error', { error: err.message });
+});
+
+autoUpdater.on('download-progress', (progressObj) => {
+  sendUpdateStatus('downloading', { percent: progressObj.percent });
+});
+
+autoUpdater.on('update-downloaded', (info) => {
+  sendUpdateStatus('downloaded', { version: info.version });
+  dialog.showMessageBox(mainWindow, {
+    type: 'info',
+    title: 'Update Ready',
+    message: `Version ${info.version} has been downloaded. Restart now to install?`,
+    buttons: ['Restart', 'Later'],
+    defaultId: 0,
+    cancelId: 1
+  }).then(result => {
+    if (result.response === 0) {
+      autoUpdater.quitAndInstall();
+    }
+  });
+});
 
 // Quit when all windows are closed
 app.on('window-all-closed', function () {
@@ -186,4 +254,27 @@ ipcMain.handle('unregister-all-global-shortcuts', async () => {
 // Unregister all shortcuts when app is about to quit
 app.on('will-quit', () => {
   globalShortcut.unregisterAll();
+});
+
+// IPC handlers for auto-updater
+ipcMain.handle('check-for-updates', async () => {
+  try {
+    await autoUpdater.checkForUpdates();
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+});
+
+ipcMain.handle('download-update', async () => {
+  try {
+    await autoUpdater.downloadUpdate();
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+});
+
+ipcMain.handle('quit-and-install', () => {
+  autoUpdater.quitAndInstall();
 });

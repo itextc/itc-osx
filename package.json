@@ -50,6 +50,11 @@
           ]
         }
       ]
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "itextc",
+      "repo": "itc-osx"
     }
   },
   "keywords": [
@@ -90,6 +95,7 @@
     "webpack-cli": "^6.0.1"
   },
   "dependencies": {
+    "electron-updater": "^6.6.2",
     "prop-types": "^15.8.1"
   }
 }

@@ -522,6 +522,11 @@
   align-items: center;
 }
 
+.update-status {
+  color: var(--accent-gold);
+  font-variant: normal;
+}
+
 /* Geometric Pattern Background */
 .app::before {
   content: "";
