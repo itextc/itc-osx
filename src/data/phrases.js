@@ -15,5 +15,5 @@ export const arabicPhrases = [
   { phrase: "السَّلَامُ عَلَيْكُم", meaning: "As Salāmu 'Alaikum (Peace be upon you)" },
   { phrase: "إِن شَاءَ الله", meaning: "ʾIn shāʾ Allāh (If Allāh wills)" },
   { phrase: "رَضِيَ اللهُ عَنْهُمَا", meaning: "Raḍī Allāhu ʿAnhumā (May Allāh be pleased with them)" },
-  { phrase: "﷽", meaning: "Bismillāh ir-Raḥmān ir-Raḥīm" }
+  { phrase: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", meaning: "Bismillāh ir-Raḥmān ir-Raḥīm" }
 ];

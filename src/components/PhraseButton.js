@@ -17,7 +17,7 @@ function PhraseButton({ phrase, meaning, onCopy, onMouseEnter, onMouseLeave }) {
   // Check if the phrase is a symbol (short phrases, typically Unicode symbols)
   const isSymbol = phrase.length <= 2;
   // Check if this is the Basmala
-  const isBasmala = phrase === '﷽';
+  const isBasmala = phrase === 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ';
 
   let buttonClass = 'phrase-button';
   if (isBasmala) {
