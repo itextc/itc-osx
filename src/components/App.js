@@ -43,7 +43,7 @@ function App() {
     }
   }, [statusMessage]);
 
-  // Keyboard shortcuts for quick copying
+  // Keyboard shortcuts for quick copying (ALT + key)
   useEffect(() => {
     const handleKeyPress = (e) => {
       // Check if user is typing in an input field
@@ -54,28 +54,58 @@ function App() {
 
       if (isInputFocused) return;
 
-      // Ctrl/Cmd + number keys (1-9) to copy corresponding phrase
-      if ((e.ctrlKey || e.metaKey) && e.key >= '1' && e.key <= '9') {
-        e.preventDefault();
+      // Only handle ALT key combinations
+      if (!e.altKey) return;
+
+      e.preventDefault();
+
+      // ALT + number keys (1-9) to copy phrases 0-8
+      if (e.key >= '1' && e.key <= '9') {
         const index = parseInt(e.key) - 1;
         if (arabicPhrases[index]) {
           copyToClipboard(arabicPhrases[index].phrase);
         }
       }
 
-      // Ctrl/Cmd + 0 to copy the last phrase (Basmala)
-      if ((e.ctrlKey || e.metaKey) && e.key === '0') {
-        e.preventDefault();
-        const lastIndex = arabicPhrases.length - 1;
-        if (arabicPhrases[lastIndex]) {
-          copyToClipboard(arabicPhrases[lastIndex].phrase);
+      // ALT + 0 to copy phrase 9 (Alḥamdulillāh)
+      if (e.key === '0') {
+        if (arabicPhrases[9]) {
+          copyToClipboard(arabicPhrases[9].phrase);
+        }
+      }
+
+      // ALT + - (dash/minus) to copy phrase 10 (Jazāk Allāhu Khairan)
+      if (e.key === '-') {
+        if (arabicPhrases[10]) {
+          copyToClipboard(arabicPhrases[10].phrase);
+        }
+      }
+
+      // ALT + = (equal) to copy phrase 11 (Bārak Allāhu Fīk)
+      if (e.key === '=') {
+        if (arabicPhrases[11]) {
+          copyToClipboard(arabicPhrases[11].phrase);
+        }
+      }
+
+      // ALT + [ (left bracket) to copy phrase 12 (As-Salāmu ʿAlaykum)
+      if (e.key === '[') {
+        if (arabicPhrases[12]) {
+          copyToClipboard(arabicPhrases[12].phrase);
+        }
+      }
+
+      // ALT + ] (right bracket) to copy phrase 13 (ʾIn shāʾ Allāh)
+      if (e.key === ']') {
+        if (arabicPhrases[13]) {
+          copyToClipboard(arabicPhrases[13].phrase);
         }
       }
     };
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [arabicPhrases]);
+  }, []);
 
   const copyToClipboard = async (phrase) => {
     try {
