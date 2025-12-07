@@ -52,6 +52,13 @@
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  
+  /* Disable text selection and copying */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 
 /* Top Navigation Bar */
