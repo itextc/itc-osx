@@ -1,18 +1,45 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { arabicPhrases } from '../data/phrases';
 import PhraseButton from './PhraseButton';
 import Documentation from './Documentation';
+import Settings from './Settings';
+import { defaultSettings } from '../data/settings';
 import './App.css';
 
 // Access secure Electron API exposed through preload script
 // Falls back gracefully for browser mode
 const electronAPI = window.electronAPI || null;
 
+// Load settings from localStorage or use defaults
+const loadSettings = () => {
+  try {
+    const saved = localStorage.getItem('itc-settings');
+    if (saved) {
+      return JSON.parse(saved);
+    }
+  } catch (err) {
+    console.error('Failed to load settings:', err);
+  }
+  return defaultSettings;
+};
+
+// Save settings to localStorage
+const saveSettings = (settings) => {
+  try {
+    localStorage.setItem('itc-settings', JSON.stringify(settings));
+  } catch (err) {
+    console.error('Failed to save settings:', err);
+  }
+};
+
 function App() {
   const [statusMessage, setStatusMessage] = useState('');
   const [meaningText, setMeaningText] = useState('');
   const [appVersion, setAppVersion] = useState('0.2.0');
   const [showDocs, setShowDocs] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [settings, setSettings] = useState(loadSettings);
+  const [globalNotification, setGlobalNotification] = useState('');
 
   // Fetch app version from Electron main process on mount
   useEffect(() => {
@@ -31,6 +58,69 @@ function App() {
     fetchVersion();
   }, []);
 
+  // Save settings whenever they change
+  useEffect(() => {
+    saveSettings(settings);
+  }, [settings]);
+
+  // Apply theme from settings
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', settings.theme);
+  }, [settings.theme]);
+
+  // Register/unregister global shortcuts when settings change
+  useEffect(() => {
+    if (!electronAPI || !electronAPI.registerGlobalShortcut) return;
+
+    const registerShortcuts = async () => {
+      // Unregister all first to clean up
+      await electronAPI.unregisterAllGlobalShortcuts();
+
+      // Register each shortcut that has global enabled
+      for (const shortcut of settings.shortcuts) {
+        if (shortcut.global) {
+          // id is a direct index number
+          const phraseIndex = typeof shortcut.id === 'number' ? shortcut.id : parseInt(String(shortcut.id).replace('phrase-', ''));
+          if (arabicPhrases[phraseIndex]) {
+            await electronAPI.registerGlobalShortcut(
+              `phrase-${shortcut.id}`,
+              shortcut.key,
+              arabicPhrases[phraseIndex].phrase
+            );
+          }
+        }
+      }
+    };
+
+    registerShortcuts();
+
+    // Cleanup on unmount
+    return () => {
+      electronAPI.unregisterAllGlobalShortcuts();
+    };
+  }, [settings.shortcuts]);
+
+  // Listen for global shortcut triggered events
+  useEffect(() => {
+    if (!electronAPI || !electronAPI.onGlobalShortcutTriggered) return;
+
+    const cleanup = electronAPI.onGlobalShortcutTriggered(({ phrase }) => {
+      setGlobalNotification(`${phrase} copied to clipboard`);
+    });
+
+    return cleanup;
+  }, []);
+
+  // Auto-hide global notification after 2 seconds
+  useEffect(() => {
+    if (globalNotification) {
+      const timer = setTimeout(() => {
+        setGlobalNotification('');
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [globalNotification]);
+
   // Auto-hide status message after 3 seconds with proper cleanup
   useEffect(() => {
     if (statusMessage) {
@@ -43,7 +133,18 @@ function App() {
     }
   }, [statusMessage]);
 
-  // Keyboard shortcuts for quick copying (Option/Alt + key)
+  // Copy to clipboard function (defined before keyboard handler)
+  const copyToClipboard = useCallback(async (phrase) => {
+    try {
+      await navigator.clipboard.writeText(phrase);
+      setStatusMessage(`${phrase} copied to clipboard`);
+    } catch (err) {
+      console.error('Failed to copy: ', err);
+      setStatusMessage('Failed to copy to clipboard');
+    }
+  }, []);
+
+  // Keyboard shortcuts for quick copying (Option/Alt + key) and app controls
   useEffect(() => {
     const handleKeyPress = (e) => {
       // Check if user is typing in an input field
@@ -54,69 +155,32 @@ function App() {
 
       if (isInputFocused) return;
 
-      // Only handle Option/Alt key combinations
+      // Cmd/Ctrl + , to open settings
+      if ((e.metaKey || e.ctrlKey) && e.code === 'Comma') {
+        e.preventDefault();
+        setShowSettings(true);
+        return;
+      }
+
+      // Only handle Option/Alt key combinations for phrase shortcuts
       if (!e.altKey) return;
 
       e.preventDefault();
 
-      // Option + number keys (1-9) to copy phrases 0-8
-      if (e.code >= 'Digit1' && e.code <= 'Digit9') {
-        const index = parseInt(e.code.replace('Digit', '')) - 1;
-        if (arabicPhrases[index]) {
-          copyToClipboard(arabicPhrases[index].phrase);
-        }
-      }
-
-      // Option + 0 to copy phrase 9 (Alḥamdulillāh)
-      if (e.code === 'Digit0') {
-        if (arabicPhrases[9]) {
-          copyToClipboard(arabicPhrases[9].phrase);
-        }
-      }
-
-      // Option + - (dash/minus) to copy phrase 10 (Jazāk Allāhu Khairan)
-      if (e.code === 'Minus') {
-        if (arabicPhrases[10]) {
-          copyToClipboard(arabicPhrases[10].phrase);
-        }
-      }
-
-      // Option + = (equal) to copy phrase 11 (Bārak Allāhu Fīk)
-      if (e.code === 'Equal') {
-        if (arabicPhrases[11]) {
-          copyToClipboard(arabicPhrases[11].phrase);
-        }
-      }
-
-      // Option + [ (left bracket) to copy phrase 12 (As-Salāmu ʿAlaykum)
-      if (e.code === 'BracketLeft') {
-        if (arabicPhrases[12]) {
-          copyToClipboard(arabicPhrases[12].phrase);
-        }
-      }
-
-      // Option + ] (right bracket) to copy phrase 13 (ʾIn shāʾ Allāh)
-      if (e.code === 'BracketRight') {
-        if (arabicPhrases[13]) {
-          copyToClipboard(arabicPhrases[13].phrase);
+      // Find matching shortcut from settings
+      const shortcut = settings.shortcuts.find(s => s.key === e.code);
+      if (shortcut) {
+        // Find the phrase by id (id is a direct index number)
+        const phraseIndex = typeof shortcut.id === 'number' ? shortcut.id : parseInt(String(shortcut.id).replace('phrase-', ''));
+        if (arabicPhrases[phraseIndex]) {
+          copyToClipboard(arabicPhrases[phraseIndex].phrase);
         }
       }
     };
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, []);
-
-  const copyToClipboard = async (phrase) => {
-    try {
-      await navigator.clipboard.writeText(phrase);
-      setStatusMessage(`${phrase} copied to clipboard`);
-      // Timeout now handled by useEffect above with proper cleanup
-    } catch (err) {
-      console.error('Failed to copy: ', err);
-      setStatusMessage('Failed to copy to clipboard');
-    }
-  };
+  }, [settings.shortcuts, copyToClipboard]);
 
   const showMeaning = (meaning) => {
     setMeaningText(meaning);
@@ -132,6 +196,18 @@ function App() {
 
   const closeDocumentation = () => {
     setShowDocs(false);
+  };
+
+  const openSettings = () => {
+    setShowSettings(true);
+  };
+
+  const closeSettings = () => {
+    setShowSettings(false);
+  };
+
+  const handleSettingsChange = (newSettings) => {
+    setSettings(newSettings);
   };
 
   const openWebsite = async () => {
@@ -188,6 +264,9 @@ function App() {
         <div className="header-side">
           <button className="nav-button" onClick={openDocumentation}>
             Documentation
+          </button>
+          <button className="nav-button" onClick={openSettings} title="Settings (⌘,)">
+            Settings
           </button>
         </div>
         <h1 className="app-title" aria-label="Islāmic Text Copier heading">Islāmic Text Copier</h1>
@@ -248,6 +327,24 @@ function App() {
 
       {/* Documentation Modal */}
       {showDocs && <Documentation onClose={closeDocumentation} />}
+
+      {/* Settings Modal */}
+      {showSettings && (
+        <Settings
+          settings={settings}
+          onSettingsChange={handleSettingsChange}
+          onClose={closeSettings}
+        />
+      )}
+
+      {/* Global Shortcut Notification Overlay */}
+      <div
+        className={`global-notification ${globalNotification ? 'visible' : ''}`}
+        role="alert"
+        aria-live="assertive"
+      >
+        {globalNotification}
+      </div>
     </div>
   );
 }

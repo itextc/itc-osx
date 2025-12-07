@@ -1,8 +1,11 @@
-const { app, BrowserWindow, shell, ipcMain } = require('electron');
+const { app, BrowserWindow, shell, ipcMain, globalShortcut, clipboard } = require('electron');
 const path = require('path');
 
 // Keep a global reference of the window object
 let mainWindow;
+
+// Track registered global shortcuts
+const registeredShortcuts = new Map();
 
 function createWindow() {
   // Create the browser window with secure configuration
@@ -99,4 +102,88 @@ ipcMain.handle('open-path', async (event, filePath) => {
  */
 ipcMain.handle('get-version', async () => {
   return app.getVersion(); // Returns version from package.json
+});
+
+/**
+ * Convert a key code to an Electron accelerator string
+ */
+function keyCodeToAccelerator(keyCode) {
+  const keyMap = {
+    'Digit1': '1', 'Digit2': '2', 'Digit3': '3', 'Digit4': '4', 'Digit5': '5',
+    'Digit6': '6', 'Digit7': '7', 'Digit8': '8', 'Digit9': '9', 'Digit0': '0',
+    'Minus': '-', 'Equal': '=', 'BracketLeft': '[', 'BracketRight': ']',
+    'Semicolon': ';', 'Quote': "'", 'Comma': ',', 'Period': '.',
+    'Slash': '/', 'Backslash': '\\'
+  };
+  return keyMap[keyCode] || keyCode;
+}
+
+/**
+ * Register a global shortcut
+ */
+ipcMain.handle('register-global-shortcut', async (event, { id, key, phrase }) => {
+  try {
+    // Unregister if already registered
+    if (registeredShortcuts.has(id)) {
+      globalShortcut.unregister(registeredShortcuts.get(id).accelerator);
+    }
+
+    const accelerator = `Alt+${keyCodeToAccelerator(key)}`;
+    
+    const success = globalShortcut.register(accelerator, () => {
+      // Copy phrase to clipboard
+      clipboard.writeText(phrase);
+      
+      // Send notification to renderer
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send('global-shortcut-triggered', { id, phrase });
+      }
+    });
+
+    if (success) {
+      registeredShortcuts.set(id, { accelerator, phrase });
+      return { success: true };
+    } else {
+      return { success: false, error: 'Failed to register shortcut' };
+    }
+  } catch (error) {
+    console.error('Failed to register global shortcut:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+/**
+ * Unregister a global shortcut
+ */
+ipcMain.handle('unregister-global-shortcut', async (event, { id }) => {
+  try {
+    if (registeredShortcuts.has(id)) {
+      const { accelerator } = registeredShortcuts.get(id);
+      globalShortcut.unregister(accelerator);
+      registeredShortcuts.delete(id);
+    }
+    return { success: true };
+  } catch (error) {
+    console.error('Failed to unregister global shortcut:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+/**
+ * Unregister all global shortcuts
+ */
+ipcMain.handle('unregister-all-global-shortcuts', async () => {
+  try {
+    globalShortcut.unregisterAll();
+    registeredShortcuts.clear();
+    return { success: true };
+  } catch (error) {
+    console.error('Failed to unregister all global shortcuts:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+// Unregister all shortcuts when app is about to quit
+app.on('will-quit', () => {
+  globalShortcut.unregisterAll();
 });

@@ -159,40 +159,40 @@ describe('App Component', () => {
   });
 
   describe('Keyboard Shortcuts', () => {
-    it('copies phrase when Ctrl+1 is pressed', async () => {
+    it('copies phrase when Option+1 is pressed', async () => {
       render(<App />);
       const firstPhrase = arabicPhrases[0].phrase;
 
-      // Simulate Ctrl+1 key press
-      fireEvent.keyDown(window, { key: '1', ctrlKey: true });
+      // Simulate Option+1 key press (using altKey and code)
+      fireEvent.keyDown(window, { code: 'Digit1', altKey: true });
 
       // Verify clipboard was called
       expect(navigator.clipboard.writeText).toHaveBeenCalledWith(firstPhrase);
     });
 
-    it('copies phrase when Cmd+1 is pressed (macOS)', async () => {
+    it('copies phrase when Alt+1 is pressed', async () => {
       render(<App />);
       const firstPhrase = arabicPhrases[0].phrase;
 
-      // Simulate Cmd+1 key press
-      fireEvent.keyDown(window, { key: '1', metaKey: true });
+      // Simulate Alt+1 key press
+      fireEvent.keyDown(window, { code: 'Digit1', altKey: true });
 
       expect(navigator.clipboard.writeText).toHaveBeenCalledWith(firstPhrase);
     });
 
-    it('copies last phrase when Ctrl+0 is pressed', async () => {
+    it('copies phrase 10 when Option+0 is pressed', async () => {
       render(<App />);
-      const lastPhrase = arabicPhrases[arabicPhrases.length - 1].phrase;
+      const phrase10 = arabicPhrases[9].phrase; // Index 9 = phrase 10 (Alḥamdulillāh)
 
-      fireEvent.keyDown(window, { key: '0', ctrlKey: true });
+      fireEvent.keyDown(window, { code: 'Digit0', altKey: true });
 
-      expect(navigator.clipboard.writeText).toHaveBeenCalledWith(lastPhrase);
+      expect(navigator.clipboard.writeText).toHaveBeenCalledWith(phrase10);
     });
 
     it('does not trigger shortcuts without modifier key', async () => {
       render(<App />);
 
-      fireEvent.keyDown(window, { key: '1' });
+      fireEvent.keyDown(window, { code: 'Digit1' });
 
       expect(navigator.clipboard.writeText).not.toHaveBeenCalled();
     });
@@ -214,9 +214,9 @@ describe('App Component', () => {
 
       render(<App />);
 
-      // Should fallback to default version
+      // Should fallback to default version (0.2.0)
       await waitFor(() => {
-        expect(screen.getByText(/Version 1\.0\.0/i)).toBeInTheDocument();
+        expect(screen.getByText(/Version 0\.2\.0/i)).toBeInTheDocument();
       });
     });
 
@@ -230,18 +230,15 @@ describe('App Component', () => {
   });
 
   describe('External Link Handlers', () => {
-    it('opens documentation when Documentation button is clicked', async () => {
-      window.electronAPI.openPath.mockResolvedValueOnce('');
-
+    it('opens documentation modal when Documentation button is clicked', async () => {
       render(<App />);
       const docButton = screen.getByText('Documentation');
 
       fireEvent.click(docButton);
 
+      // Documentation modal should appear
       await waitFor(() => {
-        expect(window.electronAPI.openPath).toHaveBeenCalledWith(
-          'resources/ITC_Documentation.pdf'
-        );
+        expect(screen.getByText(/How to Use/i)).toBeInTheDocument();
       });
     });
 

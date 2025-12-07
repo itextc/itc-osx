@@ -32,6 +32,42 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getVersion: () => ipcRenderer.invoke('get-version'),
 
   /**
+   * Register a global shortcut that works outside the app
+   * @param {string} id - Unique identifier for the shortcut
+   * @param {string} key - The key code (e.g., 'Digit1', 'Minus')
+   * @param {string} phrase - The phrase to copy when triggered
+   * @returns {Promise<{success: boolean, error?: string}>}
+   */
+  registerGlobalShortcut: (id, key, phrase) => 
+    ipcRenderer.invoke('register-global-shortcut', { id, key, phrase }),
+
+  /**
+   * Unregister a global shortcut
+   * @param {string} id - The shortcut identifier to unregister
+   * @returns {Promise<{success: boolean, error?: string}>}
+   */
+  unregisterGlobalShortcut: (id) => 
+    ipcRenderer.invoke('unregister-global-shortcut', { id }),
+
+  /**
+   * Unregister all global shortcuts
+   * @returns {Promise<{success: boolean, error?: string}>}
+   */
+  unregisterAllGlobalShortcuts: () => 
+    ipcRenderer.invoke('unregister-all-global-shortcuts'),
+
+  /**
+   * Listen for global shortcut triggered events
+   * @param {Function} callback - Called with { id, phrase } when a global shortcut fires
+   * @returns {Function} - Cleanup function to remove the listener
+   */
+  onGlobalShortcutTriggered: (callback) => {
+    const handler = (event, data) => callback(data);
+    ipcRenderer.on('global-shortcut-triggered', handler);
+    return () => ipcRenderer.removeListener('global-shortcut-triggered', handler);
+  },
+
+  /**
    * Checks if running in Electron environment
    * @returns {boolean}
    */

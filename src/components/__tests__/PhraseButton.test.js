@@ -86,7 +86,7 @@ describe('PhraseButton Component', () => {
     it('applies basmala-button class for Basmala', () => {
       const basmalaProps = {
         ...defaultProps,
-        phrase: '﷽',
+        phrase: 'بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ',
       };
       render(<PhraseButton {...basmalaProps} />);
       const button = screen.getByRole('button');
