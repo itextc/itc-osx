@@ -68,13 +68,9 @@ npm run dist-linux  # Linux AppImage
 
 This project has been migrated from Python/macOS to React/Electron for improved cross-platform support and better developer experience. See [MIGRATION.md](MIGRATION.md) for detailed migration documentation.
 
-### Legacy Python Version
+### Legacy Python (Removed)
 
-The original Python implementation files are still present for reference:
-- `itc.py` - Original tkinter implementation
-- `ctk_itc.py` - CustomTkinter implementation  
-- `setup.py` - py2app build configuration
-- `requirements.txt` - Python dependencies
+The project previously included a Python/tkinter implementation kept for reference during migration. These files have now been removed from the repository to reduce maintenance and package size. See [MIGRATION.md](MIGRATION.md) for historical context.
 
 ## Contributing
 

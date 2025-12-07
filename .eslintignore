@@ -1,0 +1,20 @@
+# Build outputs
+dist/
+build/
+release/
+
+# Dependencies
+node_modules/
+
+# Legacy Python files
+*.py
+requirements.txt
+
+# Config files
+webpack.config.js
+
+# Documentation
+*.md
+
+# Resources
+resources/

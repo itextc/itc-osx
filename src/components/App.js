@@ -1,24 +1,186 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { arabicPhrases } from '../data/phrases';
 import PhraseButton from './PhraseButton';
+import Documentation from './Documentation';
+import Settings from './Settings';
+import { defaultSettings } from '../data/settings';
 import './App.css';
 
-const { shell } = window.require ? window.require('electron') : { shell: null };
+// Access secure Electron API exposed through preload script
+// Falls back gracefully for browser mode
+const electronAPI = window.electronAPI || null;
+
+// Load settings from localStorage or use defaults
+const loadSettings = () => {
+  try {
+    const saved = localStorage.getItem('itc-settings');
+    if (saved) {
+      return JSON.parse(saved);
+    }
+  } catch (err) {
+    console.error('Failed to load settings:', err);
+  }
+  return defaultSettings;
+};
+
+// Save settings to localStorage
+const saveSettings = (settings) => {
+  try {
+    localStorage.setItem('itc-settings', JSON.stringify(settings));
+  } catch (err) {
+    console.error('Failed to save settings:', err);
+  }
+};
 
 function App() {
   const [statusMessage, setStatusMessage] = useState('');
   const [meaningText, setMeaningText] = useState('');
+  const [appVersion, setAppVersion] = useState('0.2.0');
+  const [showDocs, setShowDocs] = useState(false);
+  const [showSettings, setShowSettings] = useState(false);
+  const [settings, setSettings] = useState(loadSettings);
+  const [globalNotification, setGlobalNotification] = useState('');
 
-  const copyToClipboard = async (phrase) => {
+  // Fetch app version from Electron main process on mount
+  useEffect(() => {
+    const fetchVersion = async () => {
+      if (electronAPI && electronAPI.getVersion) {
+        try {
+          const version = await electronAPI.getVersion();
+          setAppVersion(version);
+        } catch (err) {
+          console.error('Failed to fetch version:', err);
+          // Keep default version if fetch fails
+        }
+      }
+    };
+
+    fetchVersion();
+  }, []);
+
+  // Save settings whenever they change
+  useEffect(() => {
+    saveSettings(settings);
+  }, [settings]);
+
+  // Apply theme from settings
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', settings.theme);
+  }, [settings.theme]);
+
+  // Register/unregister global shortcuts when settings change
+  useEffect(() => {
+    if (!electronAPI || !electronAPI.registerGlobalShortcut) return;
+
+    const registerShortcuts = async () => {
+      // Unregister all first to clean up
+      await electronAPI.unregisterAllGlobalShortcuts();
+
+      // Register each shortcut that has global enabled
+      for (const shortcut of settings.shortcuts) {
+        if (shortcut.global) {
+          // id is a direct index number
+          const phraseIndex = typeof shortcut.id === 'number' ? shortcut.id : parseInt(String(shortcut.id).replace('phrase-', ''));
+          if (arabicPhrases[phraseIndex]) {
+            await electronAPI.registerGlobalShortcut(
+              `phrase-${shortcut.id}`,
+              shortcut.key,
+              arabicPhrases[phraseIndex].phrase
+            );
+          }
+        }
+      }
+    };
+
+    registerShortcuts();
+
+    // Cleanup on unmount
+    return () => {
+      electronAPI.unregisterAllGlobalShortcuts();
+    };
+  }, [settings.shortcuts]);
+
+  // Listen for global shortcut triggered events
+  useEffect(() => {
+    if (!electronAPI || !electronAPI.onGlobalShortcutTriggered) return;
+
+    const cleanup = electronAPI.onGlobalShortcutTriggered(({ phrase }) => {
+      setGlobalNotification(`${phrase} copied to clipboard`);
+    });
+
+    return cleanup;
+  }, []);
+
+  // Auto-hide global notification after 2 seconds
+  useEffect(() => {
+    if (globalNotification) {
+      const timer = setTimeout(() => {
+        setGlobalNotification('');
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [globalNotification]);
+
+  // Auto-hide status message after 3 seconds with proper cleanup
+  useEffect(() => {
+    if (statusMessage) {
+      const timer = setTimeout(() => {
+        setStatusMessage('');
+      }, 3000);
+
+      // Cleanup function to prevent memory leaks
+      return () => clearTimeout(timer);
+    }
+  }, [statusMessage]);
+
+  // Copy to clipboard function (defined before keyboard handler)
+  const copyToClipboard = useCallback(async (phrase) => {
     try {
       await navigator.clipboard.writeText(phrase);
       setStatusMessage(`${phrase} copied to clipboard`);
-      setTimeout(() => setStatusMessage(''), 3000);
     } catch (err) {
       console.error('Failed to copy: ', err);
       setStatusMessage('Failed to copy to clipboard');
     }
-  };
+  }, []);
+
+  // Keyboard shortcuts for quick copying (Option/Alt + key) and app controls
+  useEffect(() => {
+    const handleKeyPress = (e) => {
+      // Check if user is typing in an input field
+      const isInputFocused =
+        e.target.tagName === 'INPUT' ||
+        e.target.tagName === 'TEXTAREA' ||
+        e.target.isContentEditable;
+
+      if (isInputFocused) return;
+
+      // Cmd/Ctrl + , to open settings
+      if ((e.metaKey || e.ctrlKey) && e.code === 'Comma') {
+        e.preventDefault();
+        setShowSettings(true);
+        return;
+      }
+
+      // Only handle Option/Alt key combinations for phrase shortcuts
+      if (!e.altKey) return;
+
+      e.preventDefault();
+
+      // Find matching shortcut from settings
+      const shortcut = settings.shortcuts.find(s => s.key === e.code);
+      if (shortcut) {
+        // Find the phrase by id (id is a direct index number)
+        const phraseIndex = typeof shortcut.id === 'number' ? shortcut.id : parseInt(String(shortcut.id).replace('phrase-', ''));
+        if (arabicPhrases[phraseIndex]) {
+          copyToClipboard(arabicPhrases[phraseIndex].phrase);
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyPress);
+    return () => window.removeEventListener('keydown', handleKeyPress);
+  }, [settings.shortcuts, copyToClipboard]);
 
   const showMeaning = (meaning) => {
     setMeaningText(meaning);
@@ -29,18 +191,37 @@ function App() {
   };
 
   const openDocumentation = () => {
-    if (shell) {
-      shell.openPath('resources/ITC_Documentation.pdf');
-    } else {
-      alert('Documentation feature not available in browser mode');
-    }
+    setShowDocs(true);
   };
 
-  const openWebsite = () => {
-    if (shell) {
-      shell.openExternal('https://github.com/itextc/itc-osx');
+  const closeDocumentation = () => {
+    setShowDocs(false);
+  };
+
+  const openSettings = () => {
+    setShowSettings(true);
+  };
+
+  const closeSettings = () => {
+    setShowSettings(false);
+  };
+
+  const handleSettingsChange = (newSettings) => {
+    setSettings(newSettings);
+  };
+
+  const openWebsite = async () => {
+    const url = 'https://github.com/itextc/itc-osx';
+    if (electronAPI) {
+      try {
+        await electronAPI.openExternal(url);
+      } catch (err) {
+        console.error('Error opening website:', err);
+        // Fallback to window.open
+        window.open(url, '_blank');
+      }
     } else {
-      window.open('https://github.com/itextc/itc-osx', '_blank');
+      window.open(url, '_blank');
     }
   };
 
@@ -48,17 +229,23 @@ function App() {
     try {
       const response = await fetch('https://raw.githubusercontent.com/itextc/itc-osx/main/version.txt');
       const remoteVersion = await response.text();
-      const localVersion = '1.0'; // You can read this from package.json or version.txt
+      const localVersion = appVersion; // Fetched from package.json via Electron API
 
       if (localVersion.trim() !== remoteVersion.trim()) {
         const shouldUpdate = window.confirm(
           'A new version of Islāmic Text Copier is available. Please download the latest version from the GitHub repository.\n\nDo you want to visit the GitHub repository to download the latest version?'
         );
         if (shouldUpdate) {
-          if (shell) {
-            shell.openExternal('https://github.com/itextc/itc-osx/releases');
+          const releasesUrl = 'https://github.com/itextc/itc-osx/releases';
+          if (electronAPI) {
+            try {
+              await electronAPI.openExternal(releasesUrl);
+            } catch (err) {
+              console.error('Error opening releases page:', err);
+              window.open(releasesUrl, '_blank');
+            }
           } else {
-            window.open('https://github.com/itextc/itc-osx/releases', '_blank');
+            window.open(releasesUrl, '_blank');
           }
         }
       } else {
@@ -73,18 +260,26 @@ function App() {
   return (
     <div className="app">
       {/* Top Navigation */}
-      <header className="app-header">
-        <button className="nav-button" onClick={openDocumentation}>
-          Documentation
-        </button>
-        <button className="nav-button about-button" onClick={openWebsite}>
-          About This App
-        </button>
+      <header className="app-header" role="banner">
+        <div className="header-side">
+          <button className="nav-button" onClick={openDocumentation}>
+            Documentation
+          </button>
+          <button className="nav-button" onClick={openSettings} title="Settings (⌘,)">
+            Settings
+          </button>
+        </div>
+        <h1 className="app-title" aria-label="Islāmic Text Copier heading">Islāmic Text Copier</h1>
+        <div className="header-side">
+          <button className="nav-button about-button" onClick={openWebsite}>
+            About This App
+          </button>
+        </div>
       </header>
 
       {/* Main Content */}
-      <main className="main-content">
-        <div className="phrases-grid">
+      <main className="main-content" id="main-content">
+        <div className="phrases-grid" role="grid" aria-label="Islamic phrases">
           {arabicPhrases.map((item, index) => (
             <PhraseButton
               key={index}
@@ -97,7 +292,12 @@ function App() {
           ))}
         </div>
 
-        <div className={`meaning-display ${meaningText ? 'visible' : ''}`}>
+        <div
+          className={`meaning-display ${meaningText ? 'visible' : ''}`}
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
+        >
           {meaningText || 'Hover over a phrase to see its meaning'}
         </div>
       </main>
@@ -108,7 +308,7 @@ function App() {
           Made by Nāsir Ātif & Abdur-Rahman Bilal
         </div>
         <div className="version-info">
-          Version 1.0
+          Version {appVersion}
         </div>
         <button className="footer-button" onClick={checkForUpdates}>
           Check for Updates
@@ -116,8 +316,34 @@ function App() {
       </footer>
 
       {/* Status Toast */}
-      <div className={`status-display ${statusMessage ? 'visible' : ''}`}>
+      <div
+        className={`status-display ${statusMessage ? 'visible' : ''}`}
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
         {statusMessage}
+      </div>
+
+      {/* Documentation Modal */}
+      {showDocs && <Documentation onClose={closeDocumentation} />}
+
+      {/* Settings Modal */}
+      {showSettings && (
+        <Settings
+          settings={settings}
+          onSettingsChange={handleSettingsChange}
+          onClose={closeSettings}
+        />
+      )}
+
+      {/* Global Shortcut Notification Overlay */}
+      <div
+        className={`global-notification ${globalNotification ? 'visible' : ''}`}
+        role="alert"
+        aria-live="assertive"
+      >
+        {globalNotification}
       </div>
     </div>
   );
