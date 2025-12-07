@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { arabicPhrases } from '../data/phrases';
 import PhraseButton from './PhraseButton';
+import Documentation from './Documentation';
 import './App.css';
 
 // Access secure Electron API exposed through preload script
@@ -11,6 +12,7 @@ function App() {
   const [statusMessage, setStatusMessage] = useState('');
   const [meaningText, setMeaningText] = useState('');
   const [appVersion, setAppVersion] = useState('1.0.0');
+  const [showDocs, setShowDocs] = useState(false);
 
   // Fetch app version from Electron main process on mount
   useEffect(() => {
@@ -94,21 +96,12 @@ function App() {
     setMeaningText('');
   };
 
-  const openDocumentation = async () => {
-    if (electronAPI) {
-      try {
-        const error = await electronAPI.openPath('resources/ITC_Documentation.pdf');
-        if (error) {
-          console.error('Failed to open documentation:', error);
-          alert('Failed to open documentation. Please check if the file exists.');
-        }
-      } catch (err) {
-        console.error('Error opening documentation:', err);
-        alert('Failed to open documentation');
-      }
-    } else {
-      alert('Documentation feature not available in browser mode');
-    }
+  const openDocumentation = () => {
+    setShowDocs(true);
+  };
+
+  const closeDocumentation = () => {
+    setShowDocs(false);
   };
 
   const openWebsite = async () => {
@@ -222,6 +215,9 @@ function App() {
       >
         {statusMessage}
       </div>
+
+      {/* Documentation Modal */}
+      {showDocs && <Documentation onClose={closeDocumentation} />}
     </div>
   );
 }
