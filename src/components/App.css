@@ -250,10 +250,11 @@
 
 /* Special styling for Basmala button */
 .phrase-button.basmala-button {
-  font-size: var(--font-size-3xl);
+  font-size: var(--font-size-base);
   height: 120px;
   padding: var(--spacing-lg);
   letter-spacing: 0.02em;
+  line-height: 1.4;
 }
 
 /* Responsive Design */
@@ -279,7 +280,7 @@
   }
 
   .phrase-button.basmala-button {
-    font-size: 2.25rem;
+    font-size: 1.25rem;
     height: 100px;
   }
 }
@@ -303,7 +304,7 @@
   }
 
   .phrase-button.basmala-button {
-    font-size: 2rem;
+    font-size: 1.125rem;
     height: 90px;
   }
 
@@ -339,7 +340,7 @@
   }
 
   .phrase-button.basmala-button {
-    font-size: 1.75rem;
+    font-size: 1rem;
     height: 80px;
   }
 
@@ -362,42 +363,33 @@
   }
 }
 
-/* Meaning and Status Display */
-/* Meaning display: collapses fully when hidden to avoid scroll whitespace */
+/* Meaning display: fixed within viewport below the grid */
 .meaning-display {
-  max-width: 600px;
-  margin: 0 auto;
-  overflow: hidden;
-  transition: all 0.3s ease;
+  position: fixed;
+  bottom: 80px; /* Above footer */
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 500px;
+  width: 90%;
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: rgba(30, 32, 40, 0.95);
+  border-radius: 10px;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  font-family: var(--font-family-primary);
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+  text-align: center;
+  font-style: italic;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 100;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 .meaning-display.visible {
-  margin-top: var(--spacing-xl);
-  margin-bottom: var(--spacing-xl);
-  padding: var(--spacing-md);
-  background: rgba(255, 255, 255, 0.02);
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  font-family: var(--font-family-primary);
-  font-size: var(--font-size-lg);
-  color: var(--text-secondary);
-  text-align: center;
-  min-height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-style: italic;
   opacity: 1;
-  transform: translateY(0);
-}
-
-.meaning-display:not(.visible) {
-  height: 0;
-  padding: 0;
-  min-height: 0;
-  opacity: 0;
-  border: none;
-  font-size: 0; /* Prevent baseline gap */
+  pointer-events: auto;
 }
 
 .status-display {
