@@ -25,24 +25,24 @@ function Documentation({ onClose }) {
             <h3>How to Use</h3>
             <h4>Copying texts</h4>
             <p>
-              It's simple; click on an Arabic text on the screen, and it's copied right to your clipboard. To make things easier, you can also use hotkeys to copy them using <strong>ALT</strong> (or <strong>Option</strong> on Mac):
+              It's simple; click on an Arabic text on the screen, and it's copied right to your clipboard. To make things easier, you can also use hotkeys to copy them using <strong>Option</strong> (or <strong>Alt</strong> on Windows):
             </p>
             
             <ul className="hotkey-list">
-              <li><kbd>ALT + 1</kbd> → Copies <span className="arabic">ﷺ</span></li>
-              <li><kbd>ALT + 2</kbd> → Copies <span className="arabic">ﷻ</span></li>
-              <li><kbd>ALT + 3</kbd> → Copies <span className="arabic">سُبْحَانَهُ وَ تَعَالَى</span></li>
-              <li><kbd>ALT + 4</kbd> → Copies <span className="arabic">عَزَّ وَ جَلَّ</span></li>
-              <li><kbd>ALT + 5</kbd> → Copies <span className="arabic">رَضِيَ اللهُ عَنْهُ</span></li>
-              <li><kbd>ALT + 6</kbd> → Copies <span className="arabic">رَضِيَ اللهُ عَنْهَا</span></li>
-              <li><kbd>ALT + 7</kbd> → Copies <span className="arabic">رَحِمَهُ الله</span></li>
-              <li><kbd>ALT + 8</kbd> → Copies <span className="arabic">حَفِظَهُ الله</span></li>
-              <li><kbd>ALT + 9</kbd> → Copies <span className="arabic">عَلَيْهِ السَّلَام</span></li>
-              <li><kbd>ALT + 0</kbd> → Copies <span className="arabic">الحَمْدُ لله</span></li>
-              <li><kbd>ALT + -</kbd> → Copies <span className="arabic">جَزَاكَ اللهُ خَيْرًا</span></li>
-              <li><kbd>ALT + =</kbd> → Copies <span className="arabic">بَارَكَ اللهُ فِيكَ</span></li>
-              <li><kbd>ALT + [</kbd> → Copies <span className="arabic">السَّلَامُ عَلَيْكُم</span></li>
-              <li><kbd>ALT + ]</kbd> → Copies <span className="arabic">إِن شَاءَ الله</span></li>
+              <li><kbd>Option + 1</kbd> → Copies <span className="arabic">ﷺ</span></li>
+              <li><kbd>Option + 2</kbd> → Copies <span className="arabic">ﷻ</span></li>
+              <li><kbd>Option + 3</kbd> → Copies <span className="arabic">سُبْحَانَهُ وَ تَعَالَى</span></li>
+              <li><kbd>Option + 4</kbd> → Copies <span className="arabic">عَزَّ وَ جَلَّ</span></li>
+              <li><kbd>Option + 5</kbd> → Copies <span className="arabic">رَضِيَ اللهُ عَنْهُ</span></li>
+              <li><kbd>Option + 6</kbd> → Copies <span className="arabic">رَضِيَ اللهُ عَنْهَا</span></li>
+              <li><kbd>Option + 7</kbd> → Copies <span className="arabic">رَحِمَهُ الله</span></li>
+              <li><kbd>Option + 8</kbd> → Copies <span className="arabic">حَفِظَهُ الله</span></li>
+              <li><kbd>Option + 9</kbd> → Copies <span className="arabic">عَلَيْهِ السَّلَام</span></li>
+              <li><kbd>Option + 0</kbd> → Copies <span className="arabic">الحَمْدُ لله</span></li>
+              <li><kbd>Option + -</kbd> → Copies <span className="arabic">جَزَاكَ اللهُ خَيْرًا</span></li>
+              <li><kbd>Option + =</kbd> → Copies <span className="arabic">بَارَكَ اللهُ فِيكَ</span></li>
+              <li><kbd>Option + [</kbd> → Copies <span className="arabic">السَّلَامُ عَلَيْكُم</span></li>
+              <li><kbd>Option + ]</kbd> → Copies <span className="arabic">إِن شَاءَ الله</span></li>
             </ul>
           </section>
 

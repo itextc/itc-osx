@@ -43,7 +43,7 @@ function App() {
     }
   }, [statusMessage]);
 
-  // Keyboard shortcuts for quick copying (ALT + key)
+  // Keyboard shortcuts for quick copying (Option/Alt + key)
   useEffect(() => {
     const handleKeyPress = (e) => {
       // Check if user is typing in an input field
@@ -54,49 +54,49 @@ function App() {
 
       if (isInputFocused) return;
 
-      // Only handle ALT key combinations
+      // Only handle Option/Alt key combinations
       if (!e.altKey) return;
 
       e.preventDefault();
 
-      // ALT + number keys (1-9) to copy phrases 0-8
-      if (e.key >= '1' && e.key <= '9') {
-        const index = parseInt(e.key) - 1;
+      // Option + number keys (1-9) to copy phrases 0-8
+      if (e.code >= 'Digit1' && e.code <= 'Digit9') {
+        const index = parseInt(e.code.replace('Digit', '')) - 1;
         if (arabicPhrases[index]) {
           copyToClipboard(arabicPhrases[index].phrase);
         }
       }
 
-      // ALT + 0 to copy phrase 9 (Alḥamdulillāh)
-      if (e.key === '0') {
+      // Option + 0 to copy phrase 9 (Alḥamdulillāh)
+      if (e.code === 'Digit0') {
         if (arabicPhrases[9]) {
           copyToClipboard(arabicPhrases[9].phrase);
         }
       }
 
-      // ALT + - (dash/minus) to copy phrase 10 (Jazāk Allāhu Khairan)
-      if (e.key === '-') {
+      // Option + - (dash/minus) to copy phrase 10 (Jazāk Allāhu Khairan)
+      if (e.code === 'Minus') {
         if (arabicPhrases[10]) {
           copyToClipboard(arabicPhrases[10].phrase);
         }
       }
 
-      // ALT + = (equal) to copy phrase 11 (Bārak Allāhu Fīk)
-      if (e.key === '=') {
+      // Option + = (equal) to copy phrase 11 (Bārak Allāhu Fīk)
+      if (e.code === 'Equal') {
         if (arabicPhrases[11]) {
           copyToClipboard(arabicPhrases[11].phrase);
         }
       }
 
-      // ALT + [ (left bracket) to copy phrase 12 (As-Salāmu ʿAlaykum)
-      if (e.key === '[') {
+      // Option + [ (left bracket) to copy phrase 12 (As-Salāmu ʿAlaykum)
+      if (e.code === 'BracketLeft') {
         if (arabicPhrases[12]) {
           copyToClipboard(arabicPhrases[12].phrase);
         }
       }
 
-      // ALT + ] (right bracket) to copy phrase 13 (ʾIn shāʾ Allāh)
-      if (e.key === ']') {
+      // Option + ] (right bracket) to copy phrase 13 (ʾIn shāʾ Allāh)
+      if (e.code === 'BracketRight') {
         if (arabicPhrases[13]) {
           copyToClipboard(arabicPhrases[13].phrase);
         }
