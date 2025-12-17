@@ -14,7 +14,7 @@ coverage/
 
 # Electron
 out/
-
+release/
 # OS generated files
 .DS_Store
 .DS_Store?
