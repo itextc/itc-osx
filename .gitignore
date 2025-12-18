@@ -3,6 +3,10 @@ build*
 .eggs*
 .vscode*
 
+!build/
+!build/entitlements.mac.plist
+!build/entitlements.mac.inherit.plist
+
 # Node.js
 node_modules/
 npm-debug.log*

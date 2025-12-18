@@ -31,6 +31,7 @@
     "directories": {
       "output": "release"
     },
+    "afterSign": "scripts/notarize.js",
     "files": [
       "src/main.js",
       "dist/**/*",
@@ -41,6 +42,10 @@
     "mac": {
       "category": "public.app-category.utilities",
       "icon": "icon.icns",
+      "hardenedRuntime": true,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.inherit.plist",
+      "gatekeeperAssess": false,
       "target": [
         {
           "target": "dmg",
@@ -71,6 +76,7 @@
     "@babel/core": "^7.28.4",
     "@babel/preset-env": "^7.28.5",
     "@babel/preset-react": "^7.27.1",
+    "@electron/notarize": "^2.5.0",
     "@electron-forge/cli": "^7.9.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
