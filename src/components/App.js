@@ -35,7 +35,7 @@ const saveSettingsToLocalStorage = (settings) => {
 function App() {
   const [statusMessage, setStatusMessage] = useState('');
   const [meaningText, setMeaningText] = useState('');
-  const [appVersion, setAppVersion] = useState('0.2.1');
+  const [appVersion, setAppVersion] = useState('0.2.2');
   const [showDocs, setShowDocs] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [settings, setSettings] = useState(loadSettingsFromLocalStorage);

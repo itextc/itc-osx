@@ -1,6 +1,6 @@
 {
   "name": "islamic-text-copier",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "A cross-platform Islamic Text Copier built with React and Electron",
   "main": "src/main.js",
   "homepage": "./",
