@@ -214,9 +214,9 @@ describe('App Component', () => {
 
       render(<App />);
 
-      // Should fallback to default version (0.2.0)
+      // Should fallback to default version (0.2.1)
       await waitFor(() => {
-        expect(screen.getByText(/Version 0\.2\.0/i)).toBeInTheDocument();
+        expect(screen.getByText(/Version 0\.2\.1/i)).toBeInTheDocument();
       });
     });
 

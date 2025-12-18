@@ -31,6 +31,10 @@ contextBridge.exposeInMainWorld('electronAPI', {
    */
   getVersion: () => ipcRenderer.invoke('get-version'),
 
+  getSettings: () => ipcRenderer.invoke('get-settings'),
+
+  setSettings: (settings) => ipcRenderer.invoke('set-settings', settings),
+
   /**
    * Register a global shortcut that works outside the app
    * @param {string} id - Unique identifier for the shortcut

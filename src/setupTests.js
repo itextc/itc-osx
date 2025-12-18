@@ -12,6 +12,8 @@ global.window.electronAPI = {
   openExternal: jest.fn(),
   openPath: jest.fn(),
   getVersion: jest.fn().mockResolvedValue('1.0.0'),
+  getSettings: jest.fn().mockResolvedValue({ success: true, settings: null }),
+  setSettings: jest.fn().mockResolvedValue({ success: true }),
   isElectron: true,
 };
 

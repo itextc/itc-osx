@@ -1,5 +1,6 @@
 const { app, BrowserWindow, shell, ipcMain, globalShortcut, clipboard, dialog } = require('electron');
 const path = require('path');
+const fs = require('fs');
 const { autoUpdater } = require('electron-updater');
 
 // Keep a global reference of the window object
@@ -173,6 +174,38 @@ ipcMain.handle('get-version', async () => {
 });
 
 /**
+ * Settings persistence (stored in userData)
+ */
+function getSettingsFilePath() {
+  return path.join(app.getPath('userData'), 'settings.json');
+}
+
+ipcMain.handle('get-settings', async () => {
+  const settingsPath = getSettingsFilePath();
+  try {
+    const raw = await fs.promises.readFile(settingsPath, 'utf8');
+    return { success: true, settings: JSON.parse(raw) };
+  } catch (error) {
+    if (error && (error.code === 'ENOENT' || error.code === 'ENOTDIR')) {
+      return { success: true, settings: null };
+    }
+    console.error('Failed to read settings:', error);
+    return { success: false, error: error.message, settings: null };
+  }
+});
+
+ipcMain.handle('set-settings', async (event, settings) => {
+  const settingsPath = getSettingsFilePath();
+  try {
+    await fs.promises.writeFile(settingsPath, JSON.stringify(settings, null, 2), 'utf8');
+    return { success: true };
+  } catch (error) {
+    console.error('Failed to write settings:', error);
+    return { success: false, error: error.message };
+  }
+});
+
+/**
  * Convert a key code to an Electron accelerator string
  */
 function keyCodeToAccelerator(keyCode) {
@@ -181,9 +214,14 @@ function keyCodeToAccelerator(keyCode) {
     'Digit6': '6', 'Digit7': '7', 'Digit8': '8', 'Digit9': '9', 'Digit0': '0',
     'Minus': '-', 'Equal': '=', 'BracketLeft': '[', 'BracketRight': ']',
     'Semicolon': ';', 'Quote': "'", 'Comma': ',', 'Period': '.',
-    'Slash': '/', 'Backslash': '\\'
+    'Slash': '/', 'Backslash': '\\', 'Backquote': '`'
   };
-  return keyMap[keyCode] || keyCode;
+
+  if (keyMap[keyCode]) return keyMap[keyCode];
+  if (typeof keyCode === 'string' && keyCode.startsWith('Key') && keyCode.length === 4) {
+    return keyCode.slice(3);
+  }
+  return keyCode;
 }
 
 /**

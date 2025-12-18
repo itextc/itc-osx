@@ -10,8 +10,8 @@ import './App.css';
 // Falls back gracefully for browser mode
 const electronAPI = window.electronAPI || null;
 
-// Load settings from localStorage or use defaults
-const loadSettings = () => {
+// Load settings from localStorage or use defaults (browser fallback)
+const loadSettingsFromLocalStorage = () => {
   try {
     const saved = localStorage.getItem('itc-settings');
     if (saved) {
@@ -23,8 +23,8 @@ const loadSettings = () => {
   return defaultSettings;
 };
 
-// Save settings to localStorage
-const saveSettings = (settings) => {
+// Save settings to localStorage (browser fallback)
+const saveSettingsToLocalStorage = (settings) => {
   try {
     localStorage.setItem('itc-settings', JSON.stringify(settings));
   } catch (err) {
@@ -35,10 +35,10 @@ const saveSettings = (settings) => {
 function App() {
   const [statusMessage, setStatusMessage] = useState('');
   const [meaningText, setMeaningText] = useState('');
-  const [appVersion, setAppVersion] = useState('0.2.0');
+  const [appVersion, setAppVersion] = useState('0.2.1');
   const [showDocs, setShowDocs] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-  const [settings, setSettings] = useState(loadSettings);
+  const [settings, setSettings] = useState(loadSettingsFromLocalStorage);
   const [globalNotification, setGlobalNotification] = useState('');
   const [updateStatus, setUpdateStatus] = useState('');
 
@@ -59,9 +59,34 @@ function App() {
     fetchVersion();
   }, []);
 
+  // Load settings from Electron main process when available
+  useEffect(() => {
+    const loadElectronSettings = async () => {
+      if (!electronAPI || !electronAPI.isElectron || !electronAPI.getSettings) return;
+
+      try {
+        const result = await electronAPI.getSettings();
+        if (result && result.success && result.settings) {
+          setSettings(result.settings);
+        }
+      } catch (err) {
+        console.error('Failed to load Electron settings:', err);
+      }
+    };
+
+    loadElectronSettings();
+  }, []);
+
   // Save settings whenever they change
   useEffect(() => {
-    saveSettings(settings);
+    if (electronAPI && electronAPI.isElectron && electronAPI.setSettings) {
+      electronAPI.setSettings(settings).catch((err) => {
+        console.error('Failed to save Electron settings:', err);
+      });
+      return;
+    }
+
+    saveSettingsToLocalStorage(settings);
   }, [settings]);
 
   // Apply theme from settings
@@ -76,6 +101,10 @@ function App() {
     const registerShortcuts = async () => {
       // Unregister all first to clean up
       await electronAPI.unregisterAllGlobalShortcuts();
+
+      if (!settings.globalShortcutsEnabled) {
+        return;
+      }
 
       // Register each shortcut that has global enabled
       for (const shortcut of settings.shortcuts) {
@@ -99,7 +128,7 @@ function App() {
     return () => {
       electronAPI.unregisterAllGlobalShortcuts();
     };
-  }, [settings.shortcuts]);
+  }, [settings.shortcuts, settings.globalShortcutsEnabled]);
 
   // Listen for global shortcut triggered events
   useEffect(() => {
@@ -377,7 +406,7 @@ function App() {
       {showSettings && (
         <Settings
           settings={settings}
-          onSettingsChange={handleSettingsChange}
+          onSave={handleSettingsChange}
           onClose={closeSettings}
         />
       )}
