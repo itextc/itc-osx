@@ -53,6 +53,9 @@ jobs:
       - name: Build (electron-builder)
         if: ${{ !startsWith(github.ref, 'refs/tags/v') }}
         run: bunx electron-builder --mac --${{ matrix.arch }} --publish never
+        env:
+          APPLE_API_KEY_ID: ${{ env.APPLE_API_KEY_ID }}
+          APPLE_API_ISSUER_ID: ${{ env.APPLE_API_ISSUER_ID }}
 
       - name: Build + publish (electron-builder)
         if: ${{ startsWith(github.ref, 'refs/tags/v') }}
