@@ -4,9 +4,9 @@ const { notarize } = require('@electron/notarize');
 module.exports = async function notarizing(context) {
   if (process.platform !== 'darwin') return;
 
-  const appleApiKeyPath = process.env.APPLE_API_KEY_PATH;
+  const appleApiKeyPath = process.env.APPLE_API_KEY_PATH || process.env.APPLE_API_KEY;
   const appleApiKeyId = process.env.APPLE_API_KEY_ID;
-  const appleApiIssuer = process.env.APPLE_API_ISSUER_ID;
+  const appleApiIssuer = process.env.APPLE_API_ISSUER_ID || process.env.APPLE_API_ISSUER;
 
   if (!appleApiKeyPath || !appleApiKeyId || !appleApiIssuer) {
     return;
